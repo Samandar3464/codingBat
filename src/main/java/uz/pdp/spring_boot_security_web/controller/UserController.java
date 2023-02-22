@@ -13,23 +13,21 @@ import uz.pdp.spring_boot_security_web.service.UserService;
 public class UserController {
 
     private final UserService userService;
+//    @ResponseBody
     @PostMapping("/add")
     public String addUser(
             @ModelAttribute UserRegisterDTO userRegisterDTO
     ) {
+
         UserEntity isSuccess = userService.add(userRegisterDTO);
         if (isSuccess!=null){
-            return "redirect:/login";
-//            return "Verify account";
+            return "redirect:/";
         }else{
             return "redirect:/register";
         }
     }
-    @GetMapping("/verify/{code}")
+    @GetMapping("/verify")
     public String verify(@PathVariable("code") String code){
-        if (userService.enableUser(code)) {
-            return "redirect:/";
-        }
-        return "redirect:/register";
+        return "redirect:/";
     }
 }

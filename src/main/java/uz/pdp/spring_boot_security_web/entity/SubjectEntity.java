@@ -16,7 +16,7 @@ import java.util.List;
 @EntityListeners(AuditingEntityListener.class)
 public class SubjectEntity extends BaseEntity {
     private String title;
-    @OneToMany(mappedBy = "subjectEntities",
+    @OneToMany(mappedBy = "subjectEntity",
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
     private List<TopicEntity> topicEntities;
