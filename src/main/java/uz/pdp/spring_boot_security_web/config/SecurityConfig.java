@@ -63,7 +63,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/login").permitAll()
                 .requestMatchers(HttpMethod.GET, "/register").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/user/add").permitAll()
-//                .requestMatchers(HttpMethod.GET, "/api/user/verify").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/user/verify/**").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
