@@ -39,4 +39,11 @@ public class AdminControllerUpTopic {
         topicService.delete(id);
         return "redirect:/adminTopic/topics";
     }
+
+//    @PreAuthorize("hasRole('ADMIN') or hasAuthority('TOPIC_EDIT')")
+    @PostMapping("/editTopic/{id}")
+    public String editSubject(@ModelAttribute TopicEditRequestDto editRequestDto, @PathVariable int id){
+        topicService.edit(id,editRequestDto);
+        return "redirect:/adminTopic/topics";
+    }
 }

@@ -29,22 +29,23 @@ import java.util.Properties;
 @RequiredArgsConstructor
 //@PropertySource("classpath:application.properties")
 public class SecurityConfig {
+
     private final AuthService authService;
     //    Admin kirib test qilishi uchun yollar
     private static final String[] TEST_LIST = new String[]{
             "/subject/{title}"
             , "/adminSubject/deleteSubject/{id}"
             , "/adminSubject/get/{id}"
-            , "/adminSubject/subjects"
-            , "/adminTopic/deleteTopic/{id}"
-            , "/adminQuestion/deleteQuestion/{id}"
+            ,"/adminSubject/subjects"
+            ,"/adminTopic/deleteTopic/{id}"
+            ,"/adminQuestion/deleteQuestion/{id}"
     };
     //    Admin kirib test qilishi uchun yollar
 
     private static final String[] TEST_LIST_POST = new String[]{
             "/adminSubject/addSubject"
-            , "/adminTopic/addTopic"
-            , "/adminQuestion/addQuestion"
+            ,"/adminTopic/addTopic"
+            ,"/adminQuestion/addQuestion"
     };
     //User krishi mumkin bolgan yollar
     private static final String[] USER_CAN_ENTER = new String[]{

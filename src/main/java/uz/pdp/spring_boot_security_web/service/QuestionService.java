@@ -56,7 +56,7 @@ public class QuestionService implements BaseService<QuestionEntity, QuestionRequ
                 .name(questionRequestDto.getName())
                 .text(questionRequestDto.getText())
                 .example(questionRequestDto.getExample())
-                .topicEntity(topicRepository.findById(questionRequestDto.getTopicId()).get())
+                .topicEntity(topicRepository.findById(questionRequestDto.getTopicId()))
                 .build();
         return questionRepository.save(questionEntity);
     }

@@ -56,4 +56,13 @@ public class AdminControllerUpSubject {
         }
         return "redirect:/404";
     }
+
+    @PostMapping("/editSubject/{id}")
+    public String editSubject(
+            @PathVariable int id,
+            @ModelAttribute SubjectRequestDTO newName
+    ){
+        subjectService.editSubject(id,newName);
+        return "redirect:/adminSubject/subjects";
+    }
 }

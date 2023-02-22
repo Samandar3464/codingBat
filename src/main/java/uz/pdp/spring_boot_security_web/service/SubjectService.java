@@ -50,12 +50,34 @@ public class SubjectService implements BaseService<SubjectEntity, SubjectRequest
         return subjectRepository.save(subjectEntity);
     }
 
-
     public SubjectEntity getByTitle(String title) {
         Optional<SubjectEntity> byId = subjectRepository.findByTitle(title);
         if (!byId.isPresent()) {
             throw new IllegalArgumentException(title + " Subject not found");
         }
         return byId.get();
+    }
+
+
+    public SubjectEntity getById(Integer id) {
+        Optional<SubjectEntity> byId = subjectRepository.findById(id);
+        if (!byId.isPresent()) {
+            throw new IllegalArgumentException(" Subject not found");
+        }
+        return byId.get();
+    }
+
+    public SubjectEntity editSubject(Integer id, SubjectRequestDTO newTitle) {
+        checkByTitle(newTitle.getTitle());
+        SubjectEntity subject = getById(id);
+        subject.setTitle(newTitle.getTitle());
+        return subjectRepository.save(subject);
+    }
+
+    private void checkByTitle(String title) {
+        Optional<SubjectEntity> optionalSubjectEntity = subjectRepository.findByTitleIgnoreCase(title);
+        if (optionalSubjectEntity.isPresent()) {
+            throw new RecordAlreadyExistException(String.format("subject %s already exists", title));
+        }
     }
 }

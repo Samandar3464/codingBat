@@ -6,11 +6,13 @@ import uz.pdp.spring_boot_security_web.entity.SubjectEntity;
 import uz.pdp.spring_boot_security_web.entity.TopicEntity;
 import uz.pdp.spring_boot_security_web.exception.RecordAlreadyExistException;
 import uz.pdp.spring_boot_security_web.exception.RecordNotFountException;
+import uz.pdp.spring_boot_security_web.model.dto.TopicEditRequestDto;
 import uz.pdp.spring_boot_security_web.model.dto.TopicRequestDto;
 import uz.pdp.spring_boot_security_web.repository.SubjectRepository;
 import uz.pdp.spring_boot_security_web.repository.TopicRepository;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -25,7 +27,7 @@ public class TopicService implements BaseService<TopicEntity, TopicRequestDto> {
     }
 
     public List<TopicEntity> getBySubjectTitleList(String subjectTittle) {
-        List<TopicEntity> allBySubjectEntitiesTitle = topicRepository.findAllBySubjectEntitiesTitle(subjectTittle);
+        List<TopicEntity> allBySubjectEntitiesTitle = topicRepository.findAllBySubjectEntityTitle(subjectTittle);
         if (allBySubjectEntitiesTitle.isEmpty()) {
             throw new RecordNotFountException(String.format("Topic list not fount by subject %s ", subjectTittle));
         }
@@ -34,17 +36,17 @@ public class TopicService implements BaseService<TopicEntity, TopicRequestDto> {
 
     @Override
     public TopicEntity getById(int id) {
-        Optional<TopicEntity> byId = topicRepository.findById(id);
-        if (!byId.isPresent()) {
+        TopicEntity topic = topicRepository.findById(id);
+        if (Objects.isNull(topic)) {
             throw new RecordNotFountException(String.format("Topic  not fount by  %s ", id));
         }
-        return byId.get();
+        return topic;
     }
 
     @Override
     public boolean delete(int id) {
-        Optional<TopicEntity> byId = topicRepository.findById(id);
-        if (!byId.isPresent()) {
+        TopicEntity topic = topicRepository.findById(id);
+        if (Objects.isNull(topic)) {
             throw new RecordNotFountException(String.format("Topic  not fount by  %s ", id));
         }
         topicRepository.deleteById(id);
@@ -53,14 +55,45 @@ public class TopicService implements BaseService<TopicEntity, TopicRequestDto> {
 
     @Override
     public TopicEntity add(TopicRequestDto topicRequestDto) {
-        if (topicRepository.findByNameAndSubjectEntitiesId(topicRequestDto.getName(), topicRequestDto.getSubjectId()).isPresent()) {
-            throw new RecordAlreadyExistException("This topic already exist into this subject ");
-        }
+        SubjectEntity subjectEntity = checkToExistence(topicRequestDto.getName(), topicRequestDto.getSubject());
+
         TopicEntity build = TopicEntity.builder()
                 .name(topicRequestDto.getName())
-                .subjectEntities(subjectRepository.findById(topicRequestDto.getSubjectId()).get())
+                .subjectEntity(subjectEntity)
                 .build();
         return topicRepository.save(build);
+    }
 
+    public void edit(int id,TopicEditRequestDto editRequestDto) {
+        String newName = editRequestDto.getNewName();
+        TopicEntity topicEntity = topicRepository.findById(id);
+        if(Objects.isNull(topicEntity)){
+            throw new RecordNotFountException("Could not find record belonged to topic with id: "+id);
+        }
+        checkToExistence(newName,topicEntity.getSubjectEntity().getId());
+        topicEntity.setName(newName);
+        topicRepository.save(topicEntity);
+    }
+
+    private SubjectEntity checkToExistence(String topicName, int subjectId){
+        TopicEntity topic = topicRepository.findByNameAndSubjectEntityId(topicName,subjectId);
+        Optional<SubjectEntity> subject = subjectRepository.findById(subjectId);
+        if(Objects.nonNull(topic)){
+            throw new RecordAlreadyExistException("This topic already exists within "+subject.get().getTitle()+" subject");
+        }
+        return subject.orElse(null);
+    }
+
+    private SubjectEntity checkToExistence(String topicName, String subject){
+        Optional<SubjectEntity> subjectEntity = subjectRepository.findByTitle(subject);
+        if(subjectEntity.isEmpty()){
+            throw new RecordNotFountException("Subject with name "+subject+" does not exist.");
+        }
+        int subjectId = subjectEntity.get().getId();
+        TopicEntity topic = topicRepository.findByNameAndSubjectEntityId(topicName,subjectId);
+        if(Objects.nonNull(topic)){
+            throw new RecordAlreadyExistException("This topic already exists within "+subjectEntity.get().getTitle()+" subject");
+        }
+        return subjectEntity.orElse(null);
     }
 }
