@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpMethod;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -37,12 +36,14 @@ public class SecurityConfig {
             , "/adminSubject/get/{id}"
             ,"/adminSubject/subjects"
             ,"/adminTopic/deleteTopic/{id}"
+            ,"/adminTopic/topics"
             ,"/adminQuestion/deleteQuestion/{id}"
     };
 
     private static final String[] TEST_LIST_POST = new String[]{
             "/adminSubject/addSubject"
             ,"/adminTopic/addTopic"
+            ,"/adminTopic/editTopic"
             ,"/adminQuestion/addQuestion"
     };
 

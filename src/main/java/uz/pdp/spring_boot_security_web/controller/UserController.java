@@ -13,7 +13,7 @@ import uz.pdp.spring_boot_security_web.service.UserService;
 public class UserController {
 
     private final UserService userService;
-    @ResponseBody
+//    @ResponseBody
     @PostMapping("/add")
     public String addUser(
             @ModelAttribute UserRegisterDTO userRegisterDTO
