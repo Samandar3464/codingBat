@@ -53,7 +53,7 @@ public class SubjectService implements BaseService<SubjectEntity, SubjectRequest
     public SubjectEntity getByTitle(String title) {
         Optional<SubjectEntity> byId = subjectRepository.findByTitle(title);
         if (!byId.isPresent()) {
-            throw new IllegalArgumentException(byId.get().getTitle() + " Subject not found");
+            throw new IllegalArgumentException(title + " Subject not found");
         }
         return byId.get();
     }
@@ -62,7 +62,7 @@ public class SubjectService implements BaseService<SubjectEntity, SubjectRequest
     public SubjectEntity getById(Integer id) {
         Optional<SubjectEntity> byId = subjectRepository.findById(id);
         if (!byId.isPresent()) {
-            throw new IllegalArgumentException(byId.get().getTitle() + " Subject not found");
+            throw new IllegalArgumentException(" Subject not found");
         }
         return byId.get();
     }
