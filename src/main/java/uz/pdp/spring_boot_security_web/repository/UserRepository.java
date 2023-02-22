@@ -5,7 +5,8 @@ import uz.pdp.spring_boot_security_web.entity.UserEntity;
 
 import java.util.Optional;
 
-public interface UserRepository extends JpaRepository<UserEntity,Integer> {
+public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     Optional<UserEntity> findByEmail(String username);
 
+    Optional<UserEntity> findByCode(String code) ;
 }

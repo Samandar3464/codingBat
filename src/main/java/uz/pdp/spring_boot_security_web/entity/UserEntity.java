@@ -19,17 +19,25 @@ import java.util.List;
 @Entity
 @Builder
 @EntityListeners(AuditingEntityListener.class)
-public class UserEntity extends BaseEntity implements UserDetails {
+public class UserEntity  implements UserDetails {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    protected int id;
     private String name;
     private String email;
     private String password;
+    private String code;
 
     @Column(name = "logo_url")
     private String logoUrl;
     @OneToOne(cascade = CascadeType.ALL)
     private RolePermissionEntity rolePermissionEntities;
 
+    private boolean isAccountNonExpired =true;
+    private boolean isAccountNonLocked =true;
+    private boolean isCredentialsNonExpired =true;
+    private boolean isEnabled =false;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return rolePermissionEntities.getAuthority();
@@ -47,22 +55,22 @@ public class UserEntity extends BaseEntity implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return isAccountNonExpired;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return isAccountNonLocked;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
+        return isCredentialsNonExpired;
     }
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return isEnabled;
     }
 
     public static UserEntity of(UserRegisterDTO userRegisterDTO) {
