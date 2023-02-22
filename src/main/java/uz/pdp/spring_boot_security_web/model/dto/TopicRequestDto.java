@@ -7,5 +7,5 @@ import lombok.*;
 @NoArgsConstructor
 public class TopicRequestDto {
     private String name;
-    private int subjectId;
+    private String subject;
 }

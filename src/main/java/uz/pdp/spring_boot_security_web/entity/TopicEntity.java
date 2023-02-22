@@ -18,7 +18,7 @@ public class TopicEntity extends BaseEntity {
 
    private String name;
    @ManyToOne
-   private SubjectEntity subjectEntities;
+   private SubjectEntity subjectEntity;
    @OneToMany(mappedBy = "topicEntity",
            cascade = CascadeType.ALL)
    private List<QuestionEntity> questionEntities;
