@@ -1,6 +1,7 @@
 package uz.pdp.spring_boot_security_web.adminController;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,13 +18,14 @@ import java.util.List;
 public class AdminControlUpUser {
     private final UserService userService;
 
-
+    @PreAuthorize("hasRole('SUPER_ADMIN')")
     @GetMapping("/allUsers")
     public String getUserList(Model model) {
         List<UserEntity> userEntities = userService.getList();
         model.addAttribute("users", userEntities);
-        return "admin/userPageForAdmin";
+        return "userPageForAdmin";
     }
+    @PreAuthorize("hasRole('SUPER_ADMIN')")
     @GetMapping("/deleteUser/{id}")
     public String getSubjectsList(@PathVariable int id) {
         userService.delete(id);

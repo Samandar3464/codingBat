@@ -7,6 +7,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import uz.pdp.spring_boot_security_web.entity.UserEntity;
+import uz.pdp.spring_boot_security_web.entity.role.RolePermissionEntity;
 import uz.pdp.spring_boot_security_web.exception.RecordNotFountException;
 import uz.pdp.spring_boot_security_web.model.dto.receive.UserRegisterDTO;
 import uz.pdp.spring_boot_security_web.repository.TopicRepository;
@@ -25,8 +26,6 @@ public class UserService implements BaseService<UserEntity, UserRegisterDTO> {
     private final PasswordEncoder passwordEncoder;
     @Qualifier("javasampleapproachMailSender")
     private final JavaMailSender javaMailSender;
-    private final TopicRepository topicRepository;
-
 
     public boolean enableUser(String code){
         Optional<UserEntity> byCode = userRepository.findByCode(code);
@@ -71,17 +70,10 @@ public class UserService implements BaseService<UserEntity, UserRegisterDTO> {
         String code = UUID.randomUUID().toString();
         UserEntity userEntity = UserEntity.of(userRegisterDTO);
         userEntity.setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()));
-        userEntity.setEnabled(false);
-        userEntity.setAccountNonExpired(true);
-        userEntity.setAccountNonLocked(true);
-        userEntity.setCredentialsNonExpired(true);
         userEntity.setCode(code);
-
         sendMail(
                 userRegisterDTO.getEmail(),
                 "Ro'yhatdan o'tishni verify ",
-//                userRegisterDTO.getName() +
-//                        " saytda royhatdan o'tganinggiz uchun raxmat .Ro'yhatdan o'tishni tugatish uchun verify tugmasini boshing " +
                         "<a href='http://localhost:8080/api/user/verify/" + code  + "'>Tasdiqlash </a>"
         );
         return userRepository.save(userEntity);

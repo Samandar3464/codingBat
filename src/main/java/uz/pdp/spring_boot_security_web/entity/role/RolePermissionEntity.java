@@ -24,6 +24,7 @@ public class RolePermissionEntity{
     private int id;
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roleEnum;
+
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> permissionEnum;
 
