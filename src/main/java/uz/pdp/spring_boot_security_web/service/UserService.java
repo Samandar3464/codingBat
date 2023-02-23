@@ -1,11 +1,14 @@
 package uz.pdp.spring_boot_security_web.service;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import uz.pdp.spring_boot_security_web.entity.UserEntity;
 import uz.pdp.spring_boot_security_web.entity.role.RolePermissionEntity;
 import uz.pdp.spring_boot_security_web.exception.RecordNotFountException;
@@ -14,6 +17,8 @@ import uz.pdp.spring_boot_security_web.repository.TopicRepository;
 import uz.pdp.spring_boot_security_web.repository.UserRepository;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -80,7 +85,7 @@ public class UserService implements BaseService<UserEntity, UserRegisterDTO> {
         return userRepository.save(userEntity);
     }
 
-    public UserEntity editUserEntity(int userId,File file){
+    public UserEntity editUserEntity(int userId, MultipartHttpServletRequest request){
         Optional<UserEntity> byId = userRepository.findById(userId);
         if (!byId.isPresent()){
             throw new RecordNotFountException("User not found");
@@ -105,4 +110,11 @@ public class UserService implements BaseService<UserEntity, UserRegisterDTO> {
             return false;
         }
     }
+
+//    private boolean savePhoto(MultipartHttpServletRequest request) throws IOException {
+//        Iterator<String> fileNames = request.getFileNames();
+//        MultipartFile file = request.getFile(fileNames.next());
+//        byte[] bytes = file.getBytes();
+//
+//    }
 }

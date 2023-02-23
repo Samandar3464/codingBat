@@ -18,7 +18,6 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Builder
-@EntityListeners(AuditingEntityListener.class)
 public class UserEntity implements UserDetails {
 
     @Id
@@ -27,9 +26,7 @@ public class UserEntity implements UserDetails {
     private String email;
     private String password;
     private String code;
-
-    @Column(name = "logo_url")
-    private String logoUrl;
+    private  String photoUrl;
     @OneToOne(cascade = CascadeType.ALL)
     private RolePermissionEntity rolePermissionEntities;
 
@@ -37,6 +34,7 @@ public class UserEntity implements UserDetails {
     private boolean isAccountNonLocked = true;
     private boolean isCredentialsNonExpired = true;
     private boolean isEnabled = false;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
