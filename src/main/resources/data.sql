@@ -16,5 +16,5 @@
 -- insert into permission_cb(name) values ('EDIT');
 -- insert into permission_cb(name) values ('READ');
 --
---
---
+-- --
+-- --

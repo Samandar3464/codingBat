@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Builder
-@EntityListeners(AuditingEntityListener.class)
+@EntityListeners(UserEntity.class)
 public class SubjectEntity extends BaseEntity {
     private String title;
     @OneToMany(mappedBy = "subjectEntity",

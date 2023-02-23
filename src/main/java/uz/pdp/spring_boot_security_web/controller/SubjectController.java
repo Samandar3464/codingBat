@@ -20,7 +20,7 @@ public class SubjectController {
         return "index";
     }
 
-    @ResponseBody
+
     @GetMapping("/{title}")
     public String getByTitle(@PathVariable("title") String title,Model model) {
         SubjectEntity byTitle = subjectService.getByTitle(title);
@@ -30,38 +30,4 @@ public class SubjectController {
         }
         return "redirect:/404";
     }
-
-
-
-//    @ResponseBody
-//    @PostMapping("/add")
-//    public String addSubject(@ModelAttribute SubjectRequestDTO subjectRequestDTO, Model model) {
-//        SubjectEntity add = subjectService.add(subjectRequestDTO);
-//        if (add != null) {
-//            model.addAttribute("subjects",subjectService.getList());
-//            return "redirect:/subject/list";
-//        }
-//        return "redirect:/404";
-//    }
-//    @ResponseBody
-//    @GetMapping("/get/{id}")
-//    public String getById(@PathVariable("id") int id, Model model) {
-//        SubjectEntity byId = subjectService.getById(id);
-//        if (byId !=null){
-//            model.addAttribute("subject", subjectService.getList());
-//            return "redirect:/subject/list";
-//        }
-//        return "redirect:/404";
-//    }
-
-//    @ResponseBody
-//    @GetMapping("/delete/{id}")
-//    public String getDeleteById(@PathVariable("id") int id, Model model) {
-//        boolean delete = subjectService.delete(id);
-//        if (delete){
-//            model.addAttribute("subject", subjectService.getList());
-//            return "redirect:/subject/list";
-//        }
-//        return "redirect:/404";
-//    }
 }

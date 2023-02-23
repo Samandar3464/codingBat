@@ -19,12 +19,11 @@ import java.util.List;
 @Entity
 @Builder
 @EntityListeners(AuditingEntityListener.class)
-public class UserEntity  implements UserDetails {
+public class UserEntity implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected int id;
-    private String name;
     private String email;
     private String password;
     private String code;
@@ -34,10 +33,11 @@ public class UserEntity  implements UserDetails {
     @OneToOne(cascade = CascadeType.ALL)
     private RolePermissionEntity rolePermissionEntities;
 
-    private boolean isAccountNonExpired =true;
-    private boolean isAccountNonLocked =true;
-    private boolean isCredentialsNonExpired =true;
-    private boolean isEnabled =false;
+    private boolean isAccountNonExpired = true;
+    private boolean isAccountNonLocked = true;
+    private boolean isCredentialsNonExpired = true;
+    private boolean isEnabled = false;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return rolePermissionEntities.getAuthority();
@@ -74,22 +74,14 @@ public class UserEntity  implements UserDetails {
     }
 
     public static UserEntity of(UserRegisterDTO userRegisterDTO) {
-
-        if (userRegisterDTO.isUser()) {
-            RolePermissionEntity rolePermission = new RolePermissionEntity();
-            rolePermission.setRoleEnum(List.of(RoleEnum.USER.name()));
-            return UserEntity.builder()
-                    .email(userRegisterDTO.getEmail())
-                    .name(userRegisterDTO.getName())
-                    .rolePermissionEntities(rolePermission)
-                    .build();
-        }
-
+        RolePermissionEntity rolePermissionEntity = new RolePermissionEntity(List.of("USER"), List.of("READ"));
         return UserEntity.builder()
                 .email(userRegisterDTO.getEmail())
-                .name(userRegisterDTO.getName())
-                .rolePermissionEntities(new RolePermissionEntity(userRegisterDTO.getRole(),userRegisterDTO.getPermissions()))
+                .rolePermissionEntities(rolePermissionEntity)
+                .isEnabled(false)
+                .isAccountNonExpired(true)
+                .isAccountNonLocked(true)
+                .isCredentialsNonExpired(true)
                 .build();
     }
-
 }

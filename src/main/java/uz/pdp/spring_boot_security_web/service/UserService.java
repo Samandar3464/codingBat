@@ -7,14 +7,17 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import uz.pdp.spring_boot_security_web.entity.UserEntity;
+import uz.pdp.spring_boot_security_web.entity.role.RolePermissionEntity;
 import uz.pdp.spring_boot_security_web.exception.RecordNotFountException;
 import uz.pdp.spring_boot_security_web.model.dto.receive.UserRegisterDTO;
 import uz.pdp.spring_boot_security_web.repository.TopicRepository;
 import uz.pdp.spring_boot_security_web.repository.UserRepository;
-
+import uz.pdp.spring_boot_security_web.utils.FileUtils;
+import java.io.File;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
 
 @Service
 @RequiredArgsConstructor
@@ -25,8 +28,6 @@ public class UserService implements BaseService<UserEntity, UserRegisterDTO> {
     private final PasswordEncoder passwordEncoder;
     @Qualifier("javasampleapproachMailSender")
     private final JavaMailSender javaMailSender;
-    private final TopicRepository topicRepository;
-
 
     public boolean enableUser(String code){
         Optional<UserEntity> byCode = userRepository.findByCode(code);
@@ -71,21 +72,24 @@ public class UserService implements BaseService<UserEntity, UserRegisterDTO> {
         String code = UUID.randomUUID().toString();
         UserEntity userEntity = UserEntity.of(userRegisterDTO);
         userEntity.setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()));
-        userEntity.setEnabled(false);
-        userEntity.setAccountNonExpired(true);
-        userEntity.setAccountNonLocked(true);
-        userEntity.setCredentialsNonExpired(true);
         userEntity.setCode(code);
-
         sendMail(
                 userRegisterDTO.getEmail(),
                 "Ro'yhatdan o'tishni verify ",
-//                userRegisterDTO.getName() +
-//                        " saytda royhatdan o'tganinggiz uchun raxmat .Ro'yhatdan o'tishni tugatish uchun verify tugmasini boshing " +
                         "<a href='http://localhost:8080/api/user/verify/" + code  + "'>Tasdiqlash </a>"
         );
         return userRepository.save(userEntity);
     }
+
+    public UserEntity editUserEntity(int userId,File file){
+        Optional<UserEntity> byId = userRepository.findById(userId);
+        if (!byId.isPresent()){
+            throw new RecordNotFountException("User not found");
+        }
+        UserEntity userEntity = byId.get();
+        userEntity.setLogoUrl(FileUtils.savaLogo(file));
+       return userRepository.save(userEntity);
+    };
 
 
     public boolean sendMail(String sendingEmail, String massage, String code) {
