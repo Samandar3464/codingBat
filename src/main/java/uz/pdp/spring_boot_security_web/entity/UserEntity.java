@@ -26,7 +26,7 @@ public class UserEntity implements UserDetails {
     private String email;
     private String password;
     private String code;
-    private  String photoUrl;
+    private  String photoUrl="/src/main/resources/images/avatar.jpg";
     @OneToOne(cascade = CascadeType.ALL)
     private RolePermissionEntity rolePermissionEntities;
 

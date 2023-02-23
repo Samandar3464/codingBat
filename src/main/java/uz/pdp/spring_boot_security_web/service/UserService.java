@@ -1,6 +1,5 @@
 package uz.pdp.spring_boot_security_web.service;
 
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.SimpleMailMessage;
@@ -10,13 +9,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import uz.pdp.spring_boot_security_web.entity.UserEntity;
-import uz.pdp.spring_boot_security_web.entity.role.RolePermissionEntity;
 import uz.pdp.spring_boot_security_web.exception.RecordNotFountException;
 import uz.pdp.spring_boot_security_web.model.dto.receive.UserRegisterDTO;
-import uz.pdp.spring_boot_security_web.repository.TopicRepository;
 import uz.pdp.spring_boot_security_web.repository.UserRepository;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
@@ -85,14 +83,15 @@ public class UserService implements BaseService<UserEntity, UserRegisterDTO> {
         return userRepository.save(userEntity);
     }
 
-    public UserEntity editUserEntity(int userId, MultipartHttpServletRequest request){
+    public UserEntity editUserEntity(int userId, MultipartHttpServletRequest request) throws IOException {
         Optional<UserEntity> byId = userRepository.findById(userId);
-        if (!byId.isPresent()){
+        if (byId.isEmpty()){
             throw new RecordNotFountException("User not found");
         }
         UserEntity userEntity = byId.get();
-
-       return userRepository.save(userEntity);
+        String photoUrl = savePhoto(request);
+        userEntity.setPhotoUrl(photoUrl);
+        return userRepository.save(userEntity);
     };
 
 
@@ -111,10 +110,19 @@ public class UserService implements BaseService<UserEntity, UserRegisterDTO> {
         }
     }
 
-//    private boolean savePhoto(MultipartHttpServletRequest request) throws IOException {
-//        Iterator<String> fileNames = request.getFileNames();
-//        MultipartFile file = request.getFile(fileNames.next());
-//        byte[] bytes = file.getBytes();
-//
-//    }
+    private String savePhoto(MultipartHttpServletRequest request) throws IOException {
+        String linkPhoto="/src/main/resources/images/";
+        Iterator<String> fileNames = request.getFileNames();
+        MultipartFile file = request.getFile(fileNames.next());
+        String name = file.getContentType();
+        String[] split = name.split("/");
+        String contentType = "."+split[split.length-1];
+
+        byte[] bytes = file.getBytes();
+        String namePhoto= UUID.randomUUID().toString();
+
+        FileOutputStream fileOutputStream= new FileOutputStream(linkPhoto+namePhoto+contentType);
+        fileOutputStream.write(bytes);
+        return linkPhoto+namePhoto+contentType;
+    }
 }

@@ -1,7 +1,9 @@
 package uz.pdp.spring_boot_security_web.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,13 +29,19 @@ public class HomeController {
 
     @GetMapping("/")
     public ModelAndView home(
-           ModelAndView modelAndView
-            ){
+            ModelAndView modelAndView
+    ) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserEntity user=null;
+        if (authentication != null) {
+            user = (UserEntity) authentication.getPrincipal();
+        }
         List<SubjectEntity> subjectList = subjectService.getList();
         List<TopicEntity> topicEntityList = topicService.getBySubjectTitleList(subjectList.get(0).getTitle());
-        modelAndView.addObject("subjects",subjectList);
-        modelAndView.addObject("topics",topicEntityList);
+        modelAndView.addObject("subjects", subjectList);
+        modelAndView.addObject("topics", topicEntityList);
+        modelAndView.addObject("user", user);
         modelAndView.setViewName("index");
-       return modelAndView;
+        return modelAndView;
     }
 }

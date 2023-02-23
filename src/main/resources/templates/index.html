@@ -7,14 +7,27 @@
 <body>
 <a href="/"><span style='font-size:200%;'>CodingBat</span></a> code practice
 
-
+<span th:if="${user==null}">Female</span>
 <div style='float:right;  margin:0px; border: 1px solid lightgray;'>
-    <form method="get" action="/register">
-        <button type="submit">Create account</button>
-    </form>
-    <form method="post" action="/login">
-        <button type="submit">Login account</button>
-    </form>
+    <table>
+        <form method="post" action="/login">
+            <tr>
+                <td>email</td>
+                <td><input type="text" name="email" size="20"></td>
+            </tr>
+            <tr>
+                <td>password</td>
+                <td><input type="password" name="password" size="20"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="submit" name="dologin" value='log in'></td>
+            </tr>
+            <input type="hidden" name="fromurl" value='/java/Map-2'></form>
+        <tr>
+            <td colspan="2">  <a href='/pref?docreate=1'>create account</a></td>
+        </tr>
+    </table>
 </div>
 
 <div class="pretab"><p class="max">Welcome to Codingbat.
