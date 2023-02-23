@@ -9,13 +9,8 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TopicRepository extends JpaRepository<TopicEntity, Integer> {
-    List<TopicEntity> findAllBySubjectEntitiesTitle(String subjectEntities_title);
-    Optional<TopicEntity> findByNameAndSubjectEntitiesId(String name, int subjectEntities_id);
+    List<TopicEntity> findAllBySubjectEntityTitle(String subjectEntity_title);
+    Optional<TopicEntity> findByNameAndSubjectEntityId(String name, int subjectEntity_id);
 
-//    @Modifying
-//    @Query(
-//            value = "truncate table Topic_entity",
-//            nativeQuery = true
-//    )
-//    void truncateMyTable();
+    TopicEntity findById(int id);
 }

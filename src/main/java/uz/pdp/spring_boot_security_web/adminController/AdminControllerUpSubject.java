@@ -1,6 +1,7 @@
 package uz.pdp.spring_boot_security_web.adminController;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,8 +18,8 @@ import java.util.List;
 @RequestMapping("/adminSubject")
 public class AdminControllerUpSubject {
     private final SubjectService subjectService;
-    private final SubjectRepository subjectRepository;
 
+    @PreAuthorize("hasRole('ADMIN') and hasAuthority('ADD') or hasRole('SUPER_ADMIN')")
     @PostMapping("/addSubject")
     public String addSubject(@ModelAttribute SubjectRequestDTO title) {
         String add = String.valueOf(subjectService.add(title));
@@ -28,7 +29,7 @@ public class AdminControllerUpSubject {
         return "redirect:/404";
     }
 
-
+    @PreAuthorize("hasRole('ADMIN') and hasAuthority('READ') or hasRole('SUPER_ADMIN')")
     @GetMapping("/subjects")
     public String getSubjectsList(Model model) {
         List<SubjectEntity> subjectEntities = subjectService.getList();
@@ -36,8 +37,9 @@ public class AdminControllerUpSubject {
         return "admin/subjectPageForAdmin";
     }
 
+    @PreAuthorize("hasRole('ADMIN') and hasAuthority('DELETE') or hasRole('SUPER_ADMIN')")
     @GetMapping("/deleteSubject/{id}")
-    public String getSubjectsList(@PathVariable int id) {
+    public String getSubjectsList(@PathVariable("id") int id) {
         boolean delete = subjectService.delete(id);
         if (delete){
             return "redirect:/adminSubject/subjects";
@@ -45,6 +47,8 @@ public class AdminControllerUpSubject {
         return "redirect:/404";
     }
 
+
+    @PreAuthorize("hasRole('ADMIN') and hasAuthority('GET') or hasRole('SUPER_ADMIN')")
     @GetMapping("/get/{id}")
     public String getById(@PathVariable("id") int id, Model model) {
         SubjectEntity byId = subjectService.getById(id);

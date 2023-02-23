@@ -31,6 +31,7 @@ import java.util.Properties;
 public class SecurityConfig {
 
     private final AuthService authService;
+    //    Admin kirib test qilishi uchun yollar
     private static final String[] TEST_LIST = new String[]{
             "/subject/{title}"
             , "/adminSubject/deleteSubject/{id}"
@@ -39,11 +40,24 @@ public class SecurityConfig {
             ,"/adminTopic/deleteTopic/{id}"
             ,"/adminQuestion/deleteQuestion/{id}"
     };
+    //    Admin kirib test qilishi uchun yollar
 
     private static final String[] TEST_LIST_POST = new String[]{
             "/adminSubject/addSubject"
             ,"/adminTopic/addTopic"
             ,"/adminQuestion/addQuestion"
+    };
+    //User krishi mumkin bolgan yollar
+    private static final String[] USER_CAN_ENTER = new String[]{
+            "/**"
+            , "/login"
+            , "/register"
+            , "/api/user/verify/**"
+            , "/subject/**"
+            , "/question"
+    };
+    private static final String[] USER_CAN_ENTER_POST = new String[]{
+            "/api/user/add"
     };
 
     @Bean
@@ -57,17 +71,13 @@ public class SecurityConfig {
         http
                 .csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers(HttpMethod.GET, TEST_LIST).permitAll()
-                .requestMatchers(HttpMethod.POST, TEST_LIST_POST).permitAll()
-                .requestMatchers(HttpMethod.GET, "/login").permitAll()
-                .requestMatchers(HttpMethod.GET, "/register").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/user/add").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/user/verify/**").permitAll()
+                .requestMatchers(HttpMethod.POST, USER_CAN_ENTER_POST).permitAll()
+                .requestMatchers(HttpMethod.GET, USER_CAN_ENTER).permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
                 .formLogin()
-                .defaultSuccessUrl("/user")
+                .defaultSuccessUrl("/")
                 .and()
                 .logout()
                 .logoutUrl("/logout")

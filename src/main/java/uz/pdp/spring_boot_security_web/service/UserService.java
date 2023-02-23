@@ -1,17 +1,24 @@
 package uz.pdp.spring_boot_security_web.service;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import uz.pdp.spring_boot_security_web.entity.UserEntity;
+import uz.pdp.spring_boot_security_web.entity.role.RolePermissionEntity;
 import uz.pdp.spring_boot_security_web.exception.RecordNotFountException;
 import uz.pdp.spring_boot_security_web.model.dto.receive.UserRegisterDTO;
 import uz.pdp.spring_boot_security_web.repository.TopicRepository;
 import uz.pdp.spring_boot_security_web.repository.UserRepository;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -25,8 +32,6 @@ public class UserService implements BaseService<UserEntity, UserRegisterDTO> {
     private final PasswordEncoder passwordEncoder;
     @Qualifier("javasampleapproachMailSender")
     private final JavaMailSender javaMailSender;
-    private final TopicRepository topicRepository;
-
 
     public boolean enableUser(String code){
         Optional<UserEntity> byCode = userRepository.findByCode(code);
@@ -71,27 +76,30 @@ public class UserService implements BaseService<UserEntity, UserRegisterDTO> {
         String code = UUID.randomUUID().toString();
         UserEntity userEntity = UserEntity.of(userRegisterDTO);
         userEntity.setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()));
-        userEntity.setEnabled(false);
-        userEntity.setAccountNonExpired(true);
-        userEntity.setAccountNonLocked(true);
-        userEntity.setCredentialsNonExpired(true);
         userEntity.setCode(code);
-
         sendMail(
                 userRegisterDTO.getEmail(),
                 "Ro'yhatdan o'tishni verify ",
-//                userRegisterDTO.getName() +
-//                        " saytda royhatdan o'tganinggiz uchun raxmat .Ro'yhatdan o'tishni tugatish uchun verify tugmasini boshing " +
                         "<a href='http://localhost:8080/api/user/verify/" + code  + "'>Tasdiqlash </a>"
         );
         return userRepository.save(userEntity);
     }
 
+    public UserEntity editUserEntity(int userId, MultipartHttpServletRequest request){
+        Optional<UserEntity> byId = userRepository.findById(userId);
+        if (!byId.isPresent()){
+            throw new RecordNotFountException("User not found");
+        }
+        UserEntity userEntity = byId.get();
+
+       return userRepository.save(userEntity);
+    };
+
 
     public boolean sendMail(String sendingEmail, String massage, String code) {
         try {
             SimpleMailMessage message = new SimpleMailMessage();
-            message.setFrom("codinglife2022@gmail.com");
+            message.setFrom("qweqq@gmail.com");
             message.setTo(sendingEmail);
             message.setSubject(massage);
             message.setText(code);
@@ -102,4 +110,11 @@ public class UserService implements BaseService<UserEntity, UserRegisterDTO> {
             return false;
         }
     }
+
+//    private boolean savePhoto(MultipartHttpServletRequest request) throws IOException {
+//        Iterator<String> fileNames = request.getFileNames();
+//        MultipartFile file = request.getFile(fileNames.next());
+//        byte[] bytes = file.getBytes();
+//
+//    }
 }
