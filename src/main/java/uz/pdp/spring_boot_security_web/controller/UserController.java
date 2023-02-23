@@ -36,10 +36,14 @@ public class UserController {
         }
         return "redirect:/register";
     }
-    @PostMapping("/editPhoto")
+    @GetMapping("/editPhoto")
+    public String savePage() throws IOException {
+        return "cabinet";
+    }
+    @PostMapping("/save")
     public String savePhoto(MultipartHttpServletRequest request) throws IOException {
         UserEntity userEntity= (UserEntity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         userService.editUserEntity(userEntity.getId(),request );
-return "cabinet";
+        return "redirect:/";
     }
 }

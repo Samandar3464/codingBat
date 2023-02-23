@@ -5,6 +5,11 @@
     <title>User Cabinet</title>
 </head>
 <body>
-<img th:src="${SecurityContextHolder.getContext().getAuthentication().getPrincipal().getPhotoUrl()}">
+<form action="/api/user/save" method="post">
+    <input name="photo" type="file" >
+    <button type="submit">Save photo</button>
+</form>
+
+
 </body>
 </html>
