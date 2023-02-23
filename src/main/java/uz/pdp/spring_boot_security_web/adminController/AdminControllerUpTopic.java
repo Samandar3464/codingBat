@@ -19,8 +19,7 @@ public class AdminControllerUpTopic {
 
     private final TopicService topicService;
 
-//    @ResponseBody
-//    @PreAuthorize("hasRole('ADMIN') or hasAuthority('TOPIC_ADD')")
+    @PreAuthorize("hasRole('ADMIN') or hasAuthority('TOPIC_ADD')")
     @PostMapping("/addTopic")
     public String addTopic(@ModelAttribute TopicRequestDto topicRequestDTO) {
         topicService.add(topicRequestDTO);
@@ -34,8 +33,6 @@ public class AdminControllerUpTopic {
         return "admin/topicPageForAdmin";
     }
 
-//    @ResponseBody
-//    @PreAuthorize("hasRole('ADMIN') or hasAuthority('TOPIC_DELETE')")
     @GetMapping("/deleteTopic/{id}")
     public String getDeleteTopicById(@PathVariable int id) {
         topicService.delete(id);
