@@ -76,12 +76,12 @@ public class TopicService implements BaseService<TopicEntity, TopicRequestDto> {
     }
 
     private SubjectEntity checkToExistence(String topicName, int subjectId){
-        TopicEntity topic = topicRepository.findByNameAndSubjectEntityId(topicName,subjectId);
+        Optional<TopicEntity> topic = topicRepository.findByNameAndSubjectEntityId(topicName,subjectId);
         Optional<SubjectEntity> subject = subjectRepository.findById(subjectId);
-        if(Objects.nonNull(topic)){
+        if(topic.isPresent()){
             throw new RecordAlreadyExistException("This topic already exists within "+subject.get().getTitle()+" subject");
         }
-        return subject.orElse(null);
+        return null;
     }
 
     private SubjectEntity checkToExistence(String topicName, String subject){
@@ -90,10 +90,10 @@ public class TopicService implements BaseService<TopicEntity, TopicRequestDto> {
             throw new RecordNotFountException("Subject with name "+subject+" does not exist.");
         }
         int subjectId = subjectEntity.get().getId();
-        TopicEntity topic = topicRepository.findByNameAndSubjectEntityId(topicName,subjectId);
-        if(Objects.nonNull(topic)){
+        Optional<TopicEntity> topic = topicRepository.findByNameAndSubjectEntityId(topicName,subjectId);
+        if(topic.isPresent()){
             throw new RecordAlreadyExistException("This topic already exists within "+subjectEntity.get().getTitle()+" subject");
         }
-        return subjectEntity.orElse(null);
+        return subjectEntity.get();
     }
 }

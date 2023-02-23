@@ -5,7 +5,7 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TopicRequestDto {
+public class    TopicRequestDto {
     private String name;
     private String subject;
 }

@@ -22,7 +22,7 @@ public class AdminControllerUpTopic {
 //    @ResponseBody
 //    @PreAuthorize("hasRole('ADMIN') or hasAuthority('TOPIC_ADD')")
     @PostMapping("/addTopic")
-    public String addSubject(@ModelAttribute TopicRequestDto topicRequestDTO) {
+    public String addTopic(@ModelAttribute TopicRequestDto topicRequestDTO) {
         topicService.add(topicRequestDTO);
         return "redirect:/adminTopic/topics";
     }
@@ -42,7 +42,7 @@ public class AdminControllerUpTopic {
         return "redirect:/adminTopic/topics";
     }
 
-//    @PreAuthorize("hasRole('ADMIN') or hasAuthority('TOPIC_EDIT')")
+    @PreAuthorize("hasRole('ADMIN') and hasAuthority('UPDATE')")
     @PostMapping("/editTopic/{id}")
     public String editSubject(@ModelAttribute TopicEditRequestDto editRequestDto, @PathVariable int id){
         topicService.edit(id,editRequestDto);
