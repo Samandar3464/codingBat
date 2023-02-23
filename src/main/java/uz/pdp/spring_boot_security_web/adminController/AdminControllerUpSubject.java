@@ -9,6 +9,7 @@ import uz.pdp.spring_boot_security_web.model.dto.SubjectRequestDTO;
 import uz.pdp.spring_boot_security_web.repository.SubjectRepository;
 import uz.pdp.spring_boot_security_web.service.SubjectService;
 
+import javax.security.auth.Subject;
 import java.util.List;
 
 @Controller
@@ -19,8 +20,8 @@ public class AdminControllerUpSubject {
     private final SubjectRepository subjectRepository;
 
     @PostMapping("/addSubject")
-    public String addSubject(@ModelAttribute SubjectRequestDTO subjectRequestDTO) {
-        SubjectEntity add = subjectService.add(subjectRequestDTO);
+    public String addSubject(@ModelAttribute SubjectRequestDTO title) {
+        String add = String.valueOf(subjectService.add(title));
         if (add != null) {
             return "redirect:/adminSubject/subjects";
         }
@@ -57,9 +58,9 @@ public class AdminControllerUpSubject {
     @PostMapping("/editSubject/{id}")
     public String editSubject(
             @PathVariable int id,
-            @ModelAttribute SubjectRequestDTO newName
+            @ModelAttribute SubjectRequestDTO newTitle
     ){
-        subjectService.editSubject(id,newName);
+        subjectService.editSubject(id,newTitle);
         return "redirect:/adminSubject/subjects";
     }
 }

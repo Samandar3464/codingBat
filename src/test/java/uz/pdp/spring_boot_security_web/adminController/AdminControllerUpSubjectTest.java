@@ -8,6 +8,10 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.testcontainers.lifecycle.Startables;
 import uz.pdp.spring_boot_security_web.controller.BaseTest;
+import uz.pdp.spring_boot_security_web.entity.SubjectEntity;
+import uz.pdp.spring_boot_security_web.model.dto.SubjectRequestDTO;
+
+import javax.security.auth.Subject;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -36,7 +40,7 @@ class AdminControllerUpSubjectTest extends BaseTest {
 
     @Test
     void findByIdThrow() throws Exception {
-        findById(1).andExpect(status().isNotFound());
+        findById(4).andExpect(status().isNotFound());
     }
 
     @Test
@@ -52,15 +56,28 @@ class AdminControllerUpSubjectTest extends BaseTest {
 
     @Test
     void deleteById() throws Exception {
-        ResultActions resultActions = callAdd();
+        callAdd();
         deleteById(1).andExpect(status().isOk());
     }
 
     @Test
     void deleteByIdThrow() throws Exception {
-        deleteById(100).andExpect(status().isNotFound());
+        deleteById(3).andExpect(status().isNotFound());
     }
 //    Controllerga ozi request jonatadi
+
+    @Test
+    void editById() throws Exception {
+        callAdd();
+        editById(1, "Go").andExpect(status().isOk());
+    }
+
+    @Test
+    void editByIdThrow() throws Exception {
+        callAdd();
+        editById(3, "Go").andExpect(status().isNotFound());
+    }
+
 
     private ResultActions deleteById(int id) throws Exception {
         final MockHttpServletRequestBuilder request =
@@ -78,6 +95,15 @@ class AdminControllerUpSubjectTest extends BaseTest {
         final MockHttpServletRequestBuilder request =
                 post("/adminSubject/addSubject")
                         .param("title", "Kotlin");
+        return mockMvc.perform(request);
+    }
+
+    private ResultActions editById(int id, String title) throws  Exception{
+        final MockHttpServletRequestBuilder request =
+                post("/adminSubject/editSubject")
+                        .param("id", String.valueOf(id))
+                        .param("title", title);
+
         return mockMvc.perform(request);
     }
 

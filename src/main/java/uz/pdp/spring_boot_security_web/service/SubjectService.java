@@ -41,12 +41,12 @@ public class SubjectService implements BaseService<SubjectEntity, SubjectRequest
     }
 
     @Override
-    public SubjectEntity add(SubjectRequestDTO subjectRequestDTO) {
-        Optional<SubjectEntity> byTitle = subjectRepository.findByTitle(subjectRequestDTO.getTitle());
+    public SubjectEntity add(SubjectRequestDTO subject) {
+        Optional<SubjectEntity> byTitle = subjectRepository.findByTitle(subject.getTitle());
         if (byTitle.isPresent()) {
-            throw new RecordAlreadyExistException(String.format("Subject %s already exist", subjectRequestDTO.getTitle()));
+            throw new RecordAlreadyExistException(String.format("Subject %s already exist",subject.getTitle()));
         }
-        SubjectEntity subjectEntity = new SubjectEntity().of(subjectRequestDTO);
+        SubjectEntity subjectEntity = new SubjectEntity().of(subject.getTitle());
         return subjectRepository.save(subjectEntity);
     }
 
