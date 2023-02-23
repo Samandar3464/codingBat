@@ -55,9 +55,12 @@ public class SecurityConfig {
             , "/api/user/verify/**"
             , "/subject/**"
             , "/question"
+            , "/api/user/editPhoto"
+
     };
     private static final String[] USER_CAN_ENTER_POST = new String[]{
             "/api/user/add"
+            , "/api/user/save"
     };
 
     @Bean

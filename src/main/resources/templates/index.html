@@ -1,12 +1,12 @@
 <!doctype html>
-<head>
+<head xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="codingbat.css">
 
     <title>CodingBat Java</title></head>
 <body>
 <a href="/"><span style='font-size:200%;'>CodingBat</span></a> code practice
-
+<!--Userni profelini tekshirish uchun -->
 <span th:if="${users==null}">
 
     <div style='float:right;  margin:0px; border: 1px solid lightgray;'>
@@ -26,7 +26,7 @@
             </tr>
             <input type="hidden" name="fromurl" value='/java/Map-2'></form>
         <tr>
-            <td colspan="2">  <a href='/pref?docreate=1'>create account</a></td>
+            <td colspan="2">  <a href="/register">create account</a></td>
         </tr>
     </table>
 </div>
@@ -34,31 +34,28 @@
 </span>
 
 <span th:if="${users!=null}">
+    <a th:each="user: ${users}">
+    <div style='float:right;  margin:0px; border: 1px solid lightgray;'>
+<!--     <img src="'../static/images/'+'${user.getPhotoUrl()}'" width="80" height="60"-->
+<!--  true versiya    <img src="../static/images/avatar.jpeg" width="80" height="60"-->
 
+     <img :src="../static/images/+${user.getPhotoUrl()}" width="80" height="60"
+          th:src="@{images/${user.getPhotoUrl()}}"/>
+    </div>
+    </a>
     <div style='float:right;  margin:0px; border: 1px solid lightgray;'>
 
-
-<!--<img  height="60" width="80" th:src="@{https://media.gettyimages.com/id/157482029/photo/stack-of-books.jpg?s=612x612&w=gi&k=20&c=_Yaofm8sZLZkKs1eMkv-zhk8K4k5u0g0fJuQrReWfdQ=}" />-->
-
-<!-- <a class="image image-full"><img src="@{~/resources/images/avatar.jpeg}"  /></a>-->
-
-        </div><div style='float:right;  margin:0px; border: 1px solid lightgray;'>
-        <tr th:each="user: ${users}">
-            <td><a th:text="${user.getEmail()}"></a></td><br>
+          <a th:each="user: ${users}">
+              <td><a th:text="${user.getEmail()}"></a></td>
+              <br>
+              <br>
             <a href="/logout">Log out</a>
-            <a href="/api/user/editPhoto">Edit profile</a>
-        </tr>
-<!--           <tr> <img th:src="${Headshoot3464\Desktop\Coding bat\codingBat\src\main\resources\images\avatar.jp}"></tr>-->
-
-
-<!--          <tr>   <a href="/logout">Log out</a></tr>-->
-
-
-
+            <a href="/api/user/editPhoto">|  Edit profile</a>
+    </a>
 </div>
-
 </span>
 
+<!--oxiri-->
 
 <div class="pretab"><p class="max">Welcome to Codingbat.
 </p>

@@ -5,8 +5,8 @@
     <title>User Cabinet</title>
 </head>
 <body>
-<form action="/api/user/save" method="post">
-    <input name="photo" type="file" >
+<form action="/api/user/save" method="post" enctype="multipart/form-data">
+    <input name="file" type="file" >
     <button type="submit">Save photo</button>
 </form>
 

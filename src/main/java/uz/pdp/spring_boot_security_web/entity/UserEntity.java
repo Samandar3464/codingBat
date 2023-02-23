@@ -76,6 +76,7 @@ public class UserEntity implements UserDetails {
         return UserEntity.builder()
                 .email(userRegisterDTO.getEmail())
                 .rolePermissionEntities(rolePermissionEntity)
+                .photoUrl("avatar.jpeg")
                 .isEnabled(false)
                 .isAccountNonExpired(true)
                 .isAccountNonLocked(true)

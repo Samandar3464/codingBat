@@ -1,7 +1,9 @@
 package uz.pdp.spring_boot_security_web.service;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.jpa.domain.JpaSort;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,6 +18,9 @@ import uz.pdp.spring_boot_security_web.repository.UserRepository;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -83,13 +88,13 @@ public class UserService implements BaseService<UserEntity, UserRegisterDTO> {
         return userRepository.save(userEntity);
     }
 
-    public UserEntity editUserEntity(int userId, MultipartHttpServletRequest request) throws IOException {
+    public UserEntity editUserEntity(int userId, MultipartFile file) throws IOException {
         Optional<UserEntity> byId = userRepository.findById(userId);
         if (byId.isEmpty()){
             throw new RecordNotFountException("User not found");
         }
         UserEntity userEntity = byId.get();
-        String photoUrl = savePhoto(request);
+        String photoUrl = savePhoto(file);
         userEntity.setPhotoUrl(photoUrl);
         return userRepository.save(userEntity);
     };
@@ -110,19 +115,27 @@ public class UserService implements BaseService<UserEntity, UserRegisterDTO> {
         }
     }
 
-    private String savePhoto(MultipartHttpServletRequest request) throws IOException {
-        String linkPhoto="/src/main/resources/images/";
-        Iterator<String> fileNames = request.getFileNames();
-        MultipartFile file = request.getFile(fileNames.next());
-        String name = file.getContentType();
-        String[] split = name.split("/");
-        String contentType = "."+split[split.length-1];
-
+    private String savePhoto(MultipartFile file) throws IOException {
+        String linkPhoto="C:\\Users\\Headshoot3464\\Desktop\\Coding bat\\codingBat\\src\\main\\resources\\images\\";
         byte[] bytes = file.getBytes();
-        String namePhoto= UUID.randomUUID().toString();
+        Path path = Paths.get(linkPhoto+ file.getOriginalFilename());
+        Files.write(path, bytes);
+        return file.getOriginalFilename();
+        }
 
-        FileOutputStream fileOutputStream= new FileOutputStream(linkPhoto+namePhoto+contentType);
-        fileOutputStream.write(bytes);
-        return linkPhoto+namePhoto+contentType;
-    }
+//    private String savePhoto(MultipartHttpServletRequest request) throws IOException {
+//        String linkPhoto="/src/main/resources/images";
+//        Iterator<String> fileNames = request.getFileNames();
+//        MultipartFile file = request.getFile(fileNames.next());
+//        if (file!=null){
+//            String contentType = file.getContentType();
+//            String originalFilename = file.getOriginalFilename();
+//            String[] split = originalFilename.split("\\.");
+//            String name =UUID.randomUUID()+"."+split[split.length-1];
+//            Path path =Paths.get(linkPhoto+"/"+name+contentType);
+//            Files.copy(file.getInputStream(),path);
+//            return linkPhoto+"/"+name+contentType;
+//        }
+//        return null;
+//    }
 }
