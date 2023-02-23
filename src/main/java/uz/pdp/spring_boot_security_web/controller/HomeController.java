@@ -33,14 +33,14 @@ public class HomeController {
     ) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserEntity user=null;
-        if (authentication != null) {
+        if (!(authentication.getPrincipal()+"").equals("anonymousUser")) {
             user = (UserEntity) authentication.getPrincipal();
         }
         List<SubjectEntity> subjectList = subjectService.getList();
         List<TopicEntity> topicEntityList = topicService.getBySubjectTitleList(subjectList.get(0).getTitle());
         modelAndView.addObject("subjects", subjectList);
         modelAndView.addObject("topics", topicEntityList);
-        modelAndView.addObject("user", user);
+        modelAndView.addObject("users", user);
         modelAndView.setViewName("index");
         return modelAndView;
     }

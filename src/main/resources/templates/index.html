@@ -7,8 +7,9 @@
 <body>
 <a href="/"><span style='font-size:200%;'>CodingBat</span></a> code practice
 
-<span th:if="${user==null}">Female</span>
-<div style='float:right;  margin:0px; border: 1px solid lightgray;'>
+<span th:if="${users==null}">
+
+    <div style='float:right;  margin:0px; border: 1px solid lightgray;'>
     <table>
         <form method="post" action="/login">
             <tr>
@@ -29,6 +30,35 @@
         </tr>
     </table>
 </div>
+
+</span>
+
+<span th:if="${users!=null}">
+
+    <div style='float:right;  margin:0px; border: 1px solid lightgray;'>
+
+
+<!--<img  height="60" width="80" th:src="@{https://media.gettyimages.com/id/157482029/photo/stack-of-books.jpg?s=612x612&w=gi&k=20&c=_Yaofm8sZLZkKs1eMkv-zhk8K4k5u0g0fJuQrReWfdQ=}" />-->
+
+       <th scope="row"><img alt="" th:src="*{/re}" style="width: 60px;height: 80px;"></th>
+
+        </div><div style='float:right;  margin:0px; border: 1px solid lightgray;'>
+        <tr th:each="user: ${users}">
+            <td><a th:text="${user.getEmail()}"></a></td><br>
+            <a href="/logout">Log out</a>
+            <a href="/api/user/editPhoto">Edit profile</a>
+        </tr>
+<!--           <tr> <img th:src="${Headshoot3464\Desktop\Coding bat\codingBat\src\main\resources\images\avatar.jp}"></tr>-->
+
+
+<!--          <tr>   <a href="/logout">Log out</a></tr>-->
+
+
+
+</div>
+
+</span>
+
 
 <div class="pretab"><p class="max">Welcome to Codingbat.
 </p>
