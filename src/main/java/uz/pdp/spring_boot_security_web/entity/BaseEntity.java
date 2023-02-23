@@ -1,9 +1,6 @@
 package uz.pdp.spring_boot_security_web.entity;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -17,6 +14,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import java.sql.Timestamp;
 @Getter
 @MappedSuperclass
+
 public abstract class BaseEntity {
 
     @Id

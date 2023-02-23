@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import uz.pdp.spring_boot_security_web.entity.TopicEntity;
+import uz.pdp.spring_boot_security_web.model.dto.TopicEditRequestDto;
 import uz.pdp.spring_boot_security_web.model.dto.TopicRequestDto;
 import uz.pdp.spring_boot_security_web.service.TopicService;
 
@@ -20,7 +21,7 @@ public class AdminControllerUpTopic {
 
     @PreAuthorize("hasRole('ADMIN') and hasAuthority('ADD') or hasRole('SUPER_ADMIN')")
     @PostMapping("/addTopic")
-    public String addSubject(@ModelAttribute TopicRequestDto topicRequestDTO) {
+    public String addTopic(@ModelAttribute TopicRequestDto topicRequestDTO) {
         topicService.add(topicRequestDTO);
         return "redirect:/adminTopic/topics";
     }
@@ -40,7 +41,7 @@ public class AdminControllerUpTopic {
         return "redirect:/adminTopic/topics";
     }
 
-//    @PreAuthorize("hasRole('ADMIN') or hasAuthority('TOPIC_EDIT')")
+    @PreAuthorize("hasRole('ADMIN') and hasAuthority('UPDATE')")
     @PostMapping("/editTopic/{id}")
     public String editSubject(@ModelAttribute TopicEditRequestDto editRequestDto, @PathVariable int id){
         topicService.edit(id,editRequestDto);
