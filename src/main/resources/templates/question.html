@@ -28,14 +28,17 @@
       <table>
         <tr th:each="question: ${questions}">
           <td>
-            <div class="summ"><a th:href="@{problem/{id}(id=${question.getId()})}"><span class="h2"><br th:text="${question.getName()}"><br></span></a> </div>
+            <div class="summ">
+              <a th:href="@{problem/{id}(id=${question.getId()})}">
+                <span class="h2">
+                  <br th:text="${question.getName()}"><br>
+                </span>
+              </a>
+            </div>
           </td>
-
         </tr>
-
       </table>
     </div>
-
   </div>
 </div>
 <style>
