@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import uz.pdp.spring_boot_security_web.entity.SubjectEntity;
 import uz.pdp.spring_boot_security_web.model.dto.SubjectRequestDTO;
+import uz.pdp.spring_boot_security_web.repository.SubjectRepository;
 import uz.pdp.spring_boot_security_web.service.SubjectService;
 
 import java.util.List;

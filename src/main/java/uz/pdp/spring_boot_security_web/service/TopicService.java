@@ -81,7 +81,7 @@ public class TopicService implements BaseService<TopicEntity, TopicRequestDto> {
         if(topic.isPresent()){
             throw new RecordAlreadyExistException("This topic already exists within "+subject.get().getTitle()+" subject");
         }
-        return null;
+        return subject.orElse(null);
     }
 
     private SubjectEntity checkToExistence(String topicName, String subject){

@@ -19,7 +19,6 @@ public class UserController {
     ) {
         UserEntity isSuccess = userService.add(userRegisterDTO);
         if (isSuccess!=null){
-
             return "verify";
         }else{
             return "redirect:/register";
