@@ -12,12 +12,11 @@ import uz.pdp.spring_boot_security_web.exception.RecordNotFountException;
 import uz.pdp.spring_boot_security_web.model.dto.receive.UserRegisterDTO;
 import uz.pdp.spring_boot_security_web.repository.TopicRepository;
 import uz.pdp.spring_boot_security_web.repository.UserRepository;
-import uz.pdp.spring_boot_security_web.utils.FileUtils;
+
 import java.io.File;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
 
 @Service
 @RequiredArgsConstructor
@@ -87,7 +86,7 @@ public class UserService implements BaseService<UserEntity, UserRegisterDTO> {
             throw new RecordNotFountException("User not found");
         }
         UserEntity userEntity = byId.get();
-        userEntity.setLogoUrl(FileUtils.savaLogo(file));
+
        return userRepository.save(userEntity);
     };
 
@@ -95,7 +94,7 @@ public class UserService implements BaseService<UserEntity, UserRegisterDTO> {
     public boolean sendMail(String sendingEmail, String massage, String code) {
         try {
             SimpleMailMessage message = new SimpleMailMessage();
-            message.setFrom("codinglife2022@gmail.com");
+            message.setFrom("qweqq@gmail.com");
             message.setTo(sendingEmail);
             message.setSubject(massage);
             message.setText(code);

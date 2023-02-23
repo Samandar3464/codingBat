@@ -19,13 +19,14 @@ public class AdminControllerUpTopic {
 
     private final TopicService topicService;
 
-    @PreAuthorize("hasRole('ADMIN') or hasAuthority('TOPIC_ADD')")
+    @PreAuthorize("hasRole('ADMIN') and hasAuthority('ADD') or hasRole('SUPER_ADMIN')")
     @PostMapping("/addTopic")
     public String addTopic(@ModelAttribute TopicRequestDto topicRequestDTO) {
         topicService.add(topicRequestDTO);
         return "redirect:/adminTopic/topics";
     }
 
+    @PreAuthorize("hasRole('ADMIN') and hasAuthority('READ') or hasRole('SUPER_ADMIN')")
     @GetMapping("/topics")
     public String getTopicsList(Model model) {
         List<TopicEntity> topicEntities = topicService.getList();
@@ -33,6 +34,7 @@ public class AdminControllerUpTopic {
         return "admin/topicPageForAdmin";
     }
 
+    @PreAuthorize("hasRole('ADMIN') and hasAuthority('DELETE') or hasRole('SUPER_ADMIN')")
     @GetMapping("/deleteTopic/{id}")
     public String getDeleteTopicById(@PathVariable int id) {
         topicService.delete(id);
