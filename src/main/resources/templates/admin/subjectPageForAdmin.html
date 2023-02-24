@@ -312,15 +312,11 @@
 </head>
 <body>
 <span th:if="${users!=null}">
-    <a th:each="user: ${users}">
-    </a>
     <div style='float:right;  margin:0px; border: 1px solid lightgray;'>
-
           <a th:each="user: ${users}">
               <td><a th:text="${user.getEmail()}"></a></td>
               <br>
             <a href="/logout">Log out</a>
-            <a href="/api/user/editPhoto">|  Edit profile</a>
     </a>
 </div>
 </span>
@@ -330,8 +326,10 @@
             <div class="table-title">
                 <div class="row">
                     <div class="col-sm-6">
-                        <a th:href="@{/admin/allUsers}" class="btn btn-success">
-                            <span>User Page</span></a>
+                        <a th:if="${users.getRolePermissionEntities().getRoleEnum().contains('SUPER_ADMIN')}">
+                            <a th:href="@{/admin/allUsers}" class="btn btn-success">
+                                <span>User Page</span></a>
+                        </a>
                         <a th:href="@{/adminTopic/topics}" class="btn btn-success">
                             <span>Topic Page</span></a>
                         <a th:href="@{/adminQuestion/questions}" class="btn btn-success">
