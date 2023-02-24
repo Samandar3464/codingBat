@@ -52,7 +52,7 @@ public class QuestionController {
 
     @PostMapping("/response/{id}")
     public String checkAnswer(@PathVariable int id, HttpServletRequest request, Model model){
-        (UserEntity) SecurityContextHolder.getContext().getAuthentication().getPrincipal()
+        UserEntity user = (UserEntity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         QuestionEntity question = questionService.getById(id);
         String text = request.getParameter("text");
         if(text.equals("Solved")){
