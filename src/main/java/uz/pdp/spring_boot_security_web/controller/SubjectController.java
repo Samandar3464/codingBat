@@ -7,16 +7,22 @@ import org.springframework.web.bind.annotation.*;
 import uz.pdp.spring_boot_security_web.entity.SubjectEntity;
 import uz.pdp.spring_boot_security_web.model.dto.SubjectRequestDTO;
 import uz.pdp.spring_boot_security_web.service.SubjectService;
+import uz.pdp.spring_boot_security_web.service.TopicService;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/subject")
 public class SubjectController {
     private final SubjectService subjectService;
+    private final TopicService topicService;
 
     @GetMapping("/list")
     public String getSubjectList(Model model) {
-        model.addAttribute("subjects", subjectService.getList());
+        List<SubjectEntity> subjectList = subjectService.getList();
+        model.addAttribute("subjects", subjectList);
+        model.addAttribute("topics", topicService.getBySubjectTitleList(subjectList.get(0).getTitle()));
         return "index";
     }
 

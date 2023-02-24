@@ -11,8 +11,8 @@
         <tr>
             <td valign=top style='text-align:right' colspan=1><a href=/about.html>about</a> |
                 <a href=/help.html>help</a> | <a href=/doc/code-help-videos.html>code help+videos</a> |
-                <a href=/done>done</a> | <a th:href="@{/auth/login}">login</a> |
-                <a th:href="@{/auth/register}">create account</a>
+                <a href=/done>done</a> | <a th:href="@{/login}">login</a> |
+                <a th:href="@{/register}">create account</a>
             </td>
         </tr>
     </table>
@@ -36,10 +36,6 @@
                         <a href=<tr th:text="${topic.getName()}"/>
                             <span class=h2 th:text="${topic.getName()}"></span>
                         </a>
-<!--                        <br>-->
-<!--                        <q th:text="${topic.getDescription()}"></q>-->
-<!--                        <br>-->
-<!--                        <p style="color: #31ea1d" th:text="${topic.getTaskEntities().size()}"></p>-->
                     </div>
                 </td>
             </tr>
@@ -47,32 +43,11 @@
         <div class=floatclear></div>
         <h3>Java Help</h3>
         <p style='max-width:800px'>
-        <ul>
-            <li><a href=/doc/java-example-solution-code.html>Java Example Solution Code</a>
-            <li><a href=/doc/java-string-introduction.html>Java String Introduction</a> (video)
-            <li><a href=/doc/java-string-substring.html>Java Substring v2</a> (video)
-            <li><a href=/doc/java-string-equals-loops.html>Java String Equals and Loops</a>
-            <li><a href=/doc/java-string-indexof-parsing.html>Java String indexOf and Parsing</a>
-            <li><a href=/doc/java-if-boolean-logic.html>Java If and Boolean Logic</a>
-            <li>&nbsp; <a href=/doc/java-if-boolean-example-solution-code-1.html>If Boolean Logic Example Solution Code
-                1</a> (video)
-            <li>&nbsp; <a href=/doc/java-if-boolean-example-solution-code-2.html>If Boolean Logic Example Solution Code
-                2</a> (video)
-            <li><a href=/doc/java-for-while-loops.html>Java For and While Loops</a>
-            <li><a href=/doc/java-array-loops.html>Java Arrays and Loops</a>
-            <li><a href=/doc/java-map-introduction.html>Java Map Introduction</a>
-            <li><a href=/doc/java-map-wordcount.html>Java Map WordCount</a>
-            <li><a href=/doc/java-functional-mapping.html>Java Functional Mapping</a>
-            <li><a href=/doc/java-functional-filtering.html>Java Functional Filtering</a>
-        </ul>
+
+
         <p style='max-width:800px'>
         <h3>Misc Code Practice</h3>
-        <ul>
-            <li><a href=/doc/practice/code-badges.html>Code Badges</a>
-            <li><a href=/doc/practice/mod-introduction.html>Introduction to Mod</a> (video)
-            <li><a href=/doc/practice/makebricks-introduction.html>MakeBricks problem and solution</a> (video x 2)
-            <li><a href=/doc/practice/fizzbuzz-code.html>FizzBuzz the famous</a> code interview question (video)
-        </ul>
+
     </div>
 </div>
 <p style='font-size:x-small;'>Copyright <a style='font-size:x-small;' href='http://www-cs-faculty.stanford.edu/~nick'>Nick
