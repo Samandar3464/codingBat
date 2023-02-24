@@ -21,9 +21,9 @@ public class SubjectEntity extends BaseEntity {
             cascade = CascadeType.ALL)
     private List<TopicEntity> topicEntities;
 
-    public SubjectEntity of(SubjectRequestDTO subjectRequestDTO) {
+    public SubjectEntity of(String title) {
         return SubjectEntity.builder()
-                .title(subjectRequestDTO.getTitle())
+                .title(title)
                 .build();
     }
 

@@ -386,7 +386,7 @@
                                         <div class="form-group">
                                             <label class="control-label" >Subject Title:</label>
                                             <input type="text" required name="title"
-                                                   class="form-control" placeholder="Enter subject name" >
+                                                   class="form-control" placeholder="Enter subject title" >
                                         </div>
                                         <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
                                         <button type="submit" class="btn btn-success">Submit</button>
@@ -466,7 +466,7 @@
     function updateId(subjectId){
         console.log(subjectId)
         let var2 = document.getElementById("updateId").action="/adminSubject/editSubject/"+subjectId;
-        let var21 = document.getElementById("myModal").action="/adminSubject/editSubject/"+subjectId;
+        // let var21 = document.getElementById("myModal").action="/adminSubject/editSubject/"+subjectId;
         console.log(var2)
     }
     function deleteId(subjectId){

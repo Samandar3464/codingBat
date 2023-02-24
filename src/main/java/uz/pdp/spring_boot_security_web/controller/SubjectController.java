@@ -21,7 +21,7 @@ public class SubjectController {
     @GetMapping("/list")
     public String getSubjectList(Model model) {
         List<SubjectEntity> list = subjectService.getList();
-        model.addAttribute("subjects", subjectService.getList());
+        model.addAttribute("subjects", list);
         model.addAttribute("topics", topicService.getBySubjectTitleList(list.get(0).getTitle()));
         return "index";
     }

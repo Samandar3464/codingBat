@@ -45,40 +45,47 @@
             <a href="/logout">Log out</a>
             <a href="/api/user/editPhoto">|  Edit profile</a>
     </a>
-</div>
-</span>
-
-<!--oxiri-->
-
-<div class="pretab"><p class="max">Welcome to Codingbat.
-</p>
-
-</div>
-
-<div class="tabc">
-    <nav>
-        <tr th:each="subject: ${subjects}">
-            <a th:text="${subject.getTitle()}" th:href="@{/{title}(title=${subject.getTitle()})}"></a>
+<div style='float:right'>
+    <table>
+        <tr>
+            <td valign=top style='text-align:right' colspan=1><a href=/about.html>about</a> |
+                <a href=/help.html>help</a> | <a href=/doc/code-help-videos.html>code help+videos</a> |
+                <a href=/done>done</a> | <a th:href="@{/login}">login</a> |
+                <a th:href="@{/register}">create account</a>
+            </td>
         </tr>
+    </table>
+</div>
+<a th:href="@{/}"><span style='font-size:200%;'>CodingBat</span></a> code practice
+<div class=pretab><p class=max>Welcome to Codingbat. See <a href=/help.html>help</a> for the latest.</div>
+<div class=tabc>
+    <nav>
+        <ul>
+            <li class=h2 th:each="subject : ${subjects}"><a
+                    th:href="@{/{title}(title=${subject.getTitle()})}"
+                    th:text="${subject.getTitle()}"></a></li>
+        </ul>
     </nav>
-    <div class="tabin">
-        <div class="floatleft">
-            <table>
-                <tr th:each="topic: ${topics}">
-                    <td>
-                        <div class="summ">
-                            <a th:href="'/question/'+${topic.getName()}">
-                                <span class="h2">
-                                    <br th:text="${topic.getName()}"><br>
-                                </span>
-                            </a>
-                        </div>
-                    </td>
+<!--    4719-->
+    <div class=tabin>
+        <table>
+            <tr style="display: grid; grid-template-columns: repeat(3, 33%); width: 1070px" th:each="topic : ${topics}">
+                <td >
+                    <div class=summ>
+                        <a href=<tr th:text="${topic.getName()}"/>
+                            <span class=h2 th:text="${topic.getName()}"></span>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <div class=floatclear></div>
+        <h3>Java Help</h3>
+        <p style='max-width:800px'>
 
-                </tr>
 
-            </table>
-        </div>
+        <p style='max-width:800px'>
+        <h3>Misc Code Practice</h3>
 
     </div>
 </div>
