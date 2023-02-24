@@ -18,6 +18,7 @@ public class QuestionEntity extends BaseEntity {
     private String name;
     private String text;
     private String example;
+    private String tickIcon;
     @ManyToOne( cascade = CascadeType.ALL)
     private TopicEntity topicEntity;
 }

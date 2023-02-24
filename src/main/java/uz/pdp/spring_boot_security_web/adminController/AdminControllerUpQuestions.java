@@ -37,4 +37,11 @@ public class AdminControllerUpQuestions {
         questionService.delete(id);
         return "redirect:/adminQuestion/questions";
     }
+
+    @PreAuthorize("hasRole('ADMIN') and hasAuthority('UPDATE') or hasRole('SUPER_ADMIN')")
+    @PostMapping("/update/{id}")
+    public String updateQuestionById(@PathVariable int id, @ModelAttribute QuestionRequestDto questionRequestDto){
+        questionService.update(id,questionRequestDto);
+        return "redirect:/adminQuestion/questions";
+    }
 }

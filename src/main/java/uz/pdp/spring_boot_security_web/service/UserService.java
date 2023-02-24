@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import uz.pdp.spring_boot_security_web.entity.QuestionEntity;
 import uz.pdp.spring_boot_security_web.entity.UserEntity;
 import uz.pdp.spring_boot_security_web.entity.role.RolePermissionEntity;
 import uz.pdp.spring_boot_security_web.exception.RecordNotFountException;
@@ -25,7 +26,6 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-
 public class UserService implements BaseService<UserEntity, UserRegisterDTO> {
 
     private final UserRepository userRepository;
@@ -117,4 +117,8 @@ public class UserService implements BaseService<UserEntity, UserRegisterDTO> {
 //        byte[] bytes = file.getBytes();
 //
 //    }
+
+    public void addSolvedQuestion(QuestionEntity question){
+
+    }
 }

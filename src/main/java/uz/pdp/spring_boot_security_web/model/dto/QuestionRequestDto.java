@@ -7,8 +7,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class QuestionRequestDto {
+    private int id;
     private String name;
     private String text;
     private String example;
-    private int topicId;
+    private String topicName;
 }

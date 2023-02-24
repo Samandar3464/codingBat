@@ -8,5 +8,5 @@ import java.util.Optional;
 
 public interface QuestionRepository extends JpaRepository<QuestionEntity, Integer> {
     List<QuestionEntity> findAllByTopicEntityName(String topicEntity_name);
-    Optional<QuestionEntity> findByNameAndTopicEntityId(String name, int topicEntity_id);
+    Optional<QuestionEntity> findByNameAndTopicEntityName(String name, String topicEntity_id);
 }

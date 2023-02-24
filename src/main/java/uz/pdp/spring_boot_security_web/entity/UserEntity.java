@@ -29,7 +29,8 @@ public class UserEntity implements UserDetails {
     private  String photoUrl;
     @OneToOne(cascade = CascadeType.ALL)
     private RolePermissionEntity rolePermissionEntities;
-
+    @ManyToMany(cascade =  CascadeType.ALL)
+    private List<QuestionEntity> questionEntityList;
     private boolean isAccountNonExpired = true;
     private boolean isAccountNonLocked = true;
     private boolean isCredentialsNonExpired = true;
