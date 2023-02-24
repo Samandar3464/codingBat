@@ -118,7 +118,7 @@ public class UserService implements BaseService<UserEntity, UserRegisterDTO> {
     }
 
     private String savePhoto(MultipartFile file) throws IOException {
-        String linkPhoto="C:\\Users\\Headshoot3464\\Desktop\\Coding bat\\codingBat\\src\\main\\resources\\static\\images\\";
+        String linkPhoto="F:\\Java lessons\\codingBat\\src\\main\\resources\\static\\images";
         if (file!=null) {
             String originalFileName = file.getOriginalFilename();
             String contentType = file.getContentType();

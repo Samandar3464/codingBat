@@ -2,6 +2,7 @@ package uz.pdp.spring_boot_security_web.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,6 +32,9 @@ public class QuestionController {
     @GetMapping("/{name}")
     public String getTopicQuestions(@PathVariable String name, Model model){
         List<QuestionEntity> questionEntities = questionService.getList(name);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserEntity user = (UserEntity) authentication.getPrincipal();
+        model.addAttribute("users", user);
         model.addAttribute("questions",questionEntities);
         model.addAttribute("subjects",subjectService.getList());
         model.addAttribute("topic",topicService.findByName(name));
@@ -41,6 +45,9 @@ public class QuestionController {
     public String getTopicQuestion(@PathVariable int id, Model model){
         QuestionEntity byId = questionService.getById(id);
         List<SubjectEntity> list = subjectService.getList();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserEntity user = (UserEntity) authentication.getPrincipal();
+        model.addAttribute("users", user);
         model.addAttribute("question",byId);
         model.addAttribute("subjects",list);
         String str = questionService.getTopicNameByQuestion(byId, list);

@@ -6,14 +6,50 @@
   <title>CodingBat Java</title></head>
 <body>
 <a href="/"><span style='font-size:200%;'>CodingBat</span></a> code practice
-<div style='float:right;  margin:0px; border: 1px solid lightgray;'>
-  <form method="get" action="/register">
-    <button type="submit">Create account</button>
-  </form>
-  <form method="post" action="/login">
-    <button type="submit">Login account</button>
-  </form>
+<!--Userni profelini tekshirish uchun -->
+<span th:if="${users==null}">
+
+    <div style='float:right;  margin:0px; border: 1px solid lightgray;'>
+    <table>
+        <tr>
+            <td colspan="2">  <a href="/login">Log in</a></td>
+        </tr>
+        <tr>
+            <td colspan="2">  <a href="/register">Create account</a></td>
+        </tr>
+    </table>
+</div   >
+
+</span>
+
+<span th:if="${users!=null}">
+    <a th:each="user: ${users}">
+    <div style='float:right;  margin:0px; border: 1px solid lightgray;'>
+
+<!--  <img th:src="@{/static/images/avatar.jpeg}"/>-->
+
+         <img :src="../static/images/avatar.jpeg" width="80" height="60"
+              th:src="@{images/avatar.jpeg}"/>
+    </div>
+
+      <!--           <img :src="../static/images/+'@{user.getPhotoUrl()}'" width="80" height="60"-->
+      <!--                th:src="@{images/${user.getPhotoUrl()}}"/>-->
+      <!--        </div>-->
+    </a>
+    <div style='float:right;  margin:0px; border: 1px solid lightgray;'>
+
+          <a th:each="user: ${users}">
+              <td><a th:text="${user.getEmail()}"></a></td>
+              <br>
+              <br>
+            <a href="/logout">Log out</a>
+            <a href="/api/user/editPhoto">|  Edit profile</a>
+    </a>
 </div>
+</span>
+
+<!--oxiri-->
+
 <div class="pretab"><p class="max">Welcome to Codingbat. </p></div>
 <div class="tabc">
   <nav>

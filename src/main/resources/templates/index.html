@@ -57,9 +57,11 @@
 
 <div class="tabc">
     <nav>
-        <tr th:each="subject: ${subjects}">
-            <a th:text="${subject.getTitle()}" th:href="@{/{title}(title=${subject.getTitle()})}"></a>
-        </tr>
+        <ul>
+            <li class="h2" th:each="subject: ${subjects}">
+                <a th:text="${subject.getTitle()}" th:href="@{/{title}(title=${subject.getTitle()})}"></a>
+            </li>
+        </ul>
     </nav>
     <div class="tabin">
         <div class="floatleft">
