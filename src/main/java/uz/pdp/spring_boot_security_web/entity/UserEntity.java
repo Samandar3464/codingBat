@@ -26,7 +26,7 @@ public class UserEntity implements UserDetails {
     private String email;
     private String password;
     private String code;
-    private  String photoUrl;
+    private  String photoUrl="C:\\Users\\Headshoot3464\\Desktop\\Coding bat\\codingBat\\src\\main\\resources\\images\\avatar.jpeg";
     @OneToOne(cascade = CascadeType.ALL)
     private RolePermissionEntity rolePermissionEntities;
     @ManyToMany(cascade =  CascadeType.ALL)
@@ -77,6 +77,7 @@ public class UserEntity implements UserDetails {
         return UserEntity.builder()
                 .email(userRegisterDTO.getEmail())
                 .rolePermissionEntities(rolePermissionEntity)
+                .photoUrl("avatar.jpeg")
                 .isEnabled(false)
                 .isAccountNonExpired(true)
                 .isAccountNonLocked(true)

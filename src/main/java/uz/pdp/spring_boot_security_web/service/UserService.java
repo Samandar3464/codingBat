@@ -3,6 +3,7 @@ package uz.pdp.spring_boot_security_web.service;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.jpa.domain.JpaSort;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,7 +19,11 @@ import uz.pdp.spring_boot_security_web.repository.TopicRepository;
 import uz.pdp.spring_boot_security_web.repository.UserRepository;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -85,14 +90,15 @@ public class UserService implements BaseService<UserEntity, UserRegisterDTO> {
         return userRepository.save(userEntity);
     }
 
-    public UserEntity editUserEntity(int userId, MultipartHttpServletRequest request){
+    public UserEntity editUserEntity(int userId, MultipartFile file) throws IOException {
         Optional<UserEntity> byId = userRepository.findById(userId);
-        if (!byId.isPresent()){
+        if (byId.isEmpty()){
             throw new RecordNotFountException("User not found");
         }
         UserEntity userEntity = byId.get();
-
-       return userRepository.save(userEntity);
+        String photoUrl = savePhoto(file);
+        userEntity.setPhotoUrl(photoUrl);
+        return userRepository.save(userEntity);
     };
 
 
@@ -111,14 +117,18 @@ public class UserService implements BaseService<UserEntity, UserRegisterDTO> {
         }
     }
 
-//    private boolean savePhoto(MultipartHttpServletRequest request) throws IOException {
-//        Iterator<String> fileNames = request.getFileNames();
-//        MultipartFile file = request.getFile(fileNames.next());
-//        byte[] bytes = file.getBytes();
-//
-//    }
-
-    public void addSolvedQuestion(QuestionEntity question){
-
+    private String savePhoto(MultipartFile file) throws IOException {
+        String linkPhoto="C:\\Users\\Headshoot3464\\Desktop\\Coding bat\\codingBat\\src\\main\\resources\\static\\images\\";
+        if (file!=null) {
+            String originalFileName = file.getOriginalFilename();
+            String contentType = file.getContentType();
+            String[] split = originalFileName.split("\\.");
+            String randomName = UUID.randomUUID().toString()+"."+split[split.length-1];
+            Path path = Paths.get(linkPhoto+"/"+randomName);
+            Files.copy(file.getInputStream(),path);
+            return randomName;
+        }
+        return null;
     }
+
 }

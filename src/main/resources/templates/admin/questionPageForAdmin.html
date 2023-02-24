@@ -284,8 +284,45 @@
             font-weight: normal;
         }
     </style>
+    <script>
+        $(document).ready(function () {
+            // Activate tooltip
+            $('[data-toggle="tooltip"]').tooltip();
+
+            // Select/Deselect checkboxes
+            var checkbox = $('table tbody input[type="checkbox"]');
+            $("#selectAll").click(function () {
+                if (this.checked) {
+                    checkbox.each(function () {
+                        this.checked = true;
+                    });
+                } else {
+                    checkbox.each(function () {
+                        this.checked = false;
+                    });
+                }
+            });
+            checkbox.click(function () {
+                if (!this.checked) {
+                    $("#selectAll").prop("checked", false);
+                }
+            });
+        });
+    </script>
 </head>
 <body>
+<span th:if="${users!=null}">
+    <a th:each="user: ${users}">
+    </a>
+    <div style='float:right;  margin:0px; border: 1px solid lightgray;'>
+          <a th:each="user: ${users}">
+              <td><a th:text="${user.getEmail()}"></a></td>
+              <br>
+            <a href="/logout">Log out</a>
+            <a href="/api/user/editPhoto">|  Edit profile</a>
+    </a>
+</div>
+</span>
 <div class="container-xl">
     <div class="table-responsive">
         <div class="table-wrapper">
@@ -371,6 +408,7 @@
                         </div>
                     </div>
                 </tr>
+
                 </tbody>
             </table>
             <div class="clearfix">
