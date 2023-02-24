@@ -17,7 +17,8 @@ import java.util.List;
 public class TopicEntity extends BaseEntity {
 
    private String name;
-   @ManyToOne(cascade = CascadeType.ALL)
+//   @ManyToOne(cascade = CascadeType.ALL)
+   @ManyToOne()
    private SubjectEntity subjectEntity;
    @OneToMany(mappedBy = "topicEntity",
            cascade = CascadeType.ALL)
