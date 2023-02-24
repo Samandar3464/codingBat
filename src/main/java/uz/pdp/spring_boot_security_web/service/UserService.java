@@ -116,26 +116,17 @@ public class UserService implements BaseService<UserEntity, UserRegisterDTO> {
     }
 
     private String savePhoto(MultipartFile file) throws IOException {
-        String linkPhoto="C:\\Users\\Headshoot3464\\Desktop\\Coding bat\\codingBat\\src\\main\\resources\\images\\";
-        byte[] bytes = file.getBytes();
-        Path path = Paths.get(linkPhoto+ file.getOriginalFilename());
-        Files.write(path, bytes);
-        return file.getOriginalFilename();
+        String linkPhoto="C:\\Users\\Headshoot3464\\Desktop\\Coding bat\\codingBat\\src\\main\\resources\\static\\images\\";
+        if (file!=null) {
+            String originalFileName = file.getOriginalFilename();
+            String contentType = file.getContentType();
+            String[] split = originalFileName.split("\\.");
+            String randomName = UUID.randomUUID().toString()+"."+split[split.length-1];
+            Path path = Paths.get(linkPhoto+"/"+randomName);
+            Files.copy(file.getInputStream(),path);
+            return randomName;
         }
+        return null;
+    }
 
-//    private String savePhoto(MultipartHttpServletRequest request) throws IOException {
-//        String linkPhoto="/src/main/resources/images";
-//        Iterator<String> fileNames = request.getFileNames();
-//        MultipartFile file = request.getFile(fileNames.next());
-//        if (file!=null){
-//            String contentType = file.getContentType();
-//            String originalFilename = file.getOriginalFilename();
-//            String[] split = originalFilename.split("\\.");
-//            String name =UUID.randomUUID()+"."+split[split.length-1];
-//            Path path =Paths.get(linkPhoto+"/"+name+contentType);
-//            Files.copy(file.getInputStream(),path);
-//            return linkPhoto+"/"+name+contentType;
-//        }
-//        return null;
-//    }
 }

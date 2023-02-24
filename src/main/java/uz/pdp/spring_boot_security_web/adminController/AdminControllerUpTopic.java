@@ -2,10 +2,13 @@ package uz.pdp.spring_boot_security_web.adminController;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import uz.pdp.spring_boot_security_web.entity.TopicEntity;
+import uz.pdp.spring_boot_security_web.entity.UserEntity;
 import uz.pdp.spring_boot_security_web.model.dto.TopicEditRequestDto;
 import uz.pdp.spring_boot_security_web.model.dto.TopicRequestDto;
 import uz.pdp.spring_boot_security_web.service.TopicService;
@@ -30,6 +33,9 @@ public class AdminControllerUpTopic {
     @GetMapping("/topics")
     public String getTopicsList(Model model) {
         List<TopicEntity> topicEntities = topicService.getList();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserEntity user = (UserEntity) authentication.getPrincipal();
+        model.addAttribute("users", user);
         model.addAttribute("topics", topicEntities);
         return "admin/topicPageForAdmin";
     }

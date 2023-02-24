@@ -2,10 +2,13 @@ package uz.pdp.spring_boot_security_web.adminController;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import uz.pdp.spring_boot_security_web.entity.SubjectEntity;
+import uz.pdp.spring_boot_security_web.entity.UserEntity;
 import uz.pdp.spring_boot_security_web.model.dto.SubjectRequestDTO;
 import uz.pdp.spring_boot_security_web.repository.SubjectRepository;
 import uz.pdp.spring_boot_security_web.service.SubjectService;
@@ -32,7 +35,11 @@ public class AdminControllerUpSubject {
     @GetMapping("/subjects")
     public String getSubjectsList(Model model) {
         List<SubjectEntity> subjectEntities = subjectService.getList();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserEntity user = (UserEntity) authentication.getPrincipal();
+        model.addAttribute("users", user);
         model.addAttribute("subjects", subjectEntities);
+
         return "admin/subjectPageForAdmin";
     }
 

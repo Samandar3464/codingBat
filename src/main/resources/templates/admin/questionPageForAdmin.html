@@ -311,6 +311,18 @@
     </script>
 </head>
 <body>
+<span th:if="${users!=null}">
+    <a th:each="user: ${users}">
+    </a>
+    <div style='float:right;  margin:0px; border: 1px solid lightgray;'>
+          <a th:each="user: ${users}">
+              <td><a th:text="${user.getEmail()}"></a></td>
+              <br>
+            <a href="/logout">Log out</a>
+            <a href="/api/user/editPhoto">|  Edit profile</a>
+    </a>
+</div>
+</span>
 <div class="container-xl">
     <div class="table-responsive">
         <div class="table-wrapper">
@@ -355,9 +367,9 @@
                     <td><br th:text="${question.getExample()}"><br></td>
                     <td><br th:text="${question.getTopicEntity().getName()}"><br></td>
                     <td>
-<!--                        <a th:href="@{/adminQuestion/editQuestion/{id}(id=${question.getId()})}">-->
-<!--                            <i class="material-icons">&#xE254;</i>-->
-<!--                        </a>-->
+                        <!--                        <a th:href="@{/adminQuestion/editQuestion/{id}(id=${question.getId()})}">-->
+                        <!--                            <i class="material-icons">&#xE254;</i>-->
+                        <!--                        </a>-->
                         <a th:href="@{/adminQuestion/deleteQuestion/{id}(id=${question.getId()})}">
                             <i class="material-icons">&#xE872;</i>
                         </a>

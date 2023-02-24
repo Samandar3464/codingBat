@@ -1,5 +1,5 @@
 <!doctype html>
-<head xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head xmlns:th="http://www.thymeleaf.org">
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="codingbat.css">
 
@@ -11,37 +11,30 @@
 
     <div style='float:right;  margin:0px; border: 1px solid lightgray;'>
     <table>
-        <form method="post" action="/login">
-            <tr>
-                <td>email</td>
-                <td><input type="text" name="email" size="20"></td>
-            </tr>
-            <tr>
-                <td>password</td>
-                <td><input type="password" name="password" size="20"></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td><input type="submit" name="dologin" value='log in'></td>
-            </tr>
-            <input type="hidden" name="fromurl" value='/java/Map-2'></form>
         <tr>
-            <td colspan="2">  <a href="/register">create account</a></td>
+            <td colspan="2">  <a href="/login">Log in</a></td>
+        </tr>
+        <tr>
+            <td colspan="2">  <a href="/register">Create account</a></td>
         </tr>
     </table>
-</div>
+</div   >
 
 </span>
 
 <span th:if="${users!=null}">
     <a th:each="user: ${users}">
     <div style='float:right;  margin:0px; border: 1px solid lightgray;'>
-<!--     <img src="'../static/images/'+'${user.getPhotoUrl()}'" width="80" height="60"-->
-<!--  true versiya    <img src="../static/images/avatar.jpeg" width="80" height="60"-->
 
-     <img :src="../static/images/+${user.getPhotoUrl()}" width="80" height="60"
-          th:src="@{images/${user.getPhotoUrl()}}"/>
+<!--  <img th:src="@{/static/images/avatar.jpeg}"/>-->
+
+         <img :src="../static/images/avatar.jpeg" width="80" height="60"
+          th:src="@{images/avatar.jpeg}"/>
     </div>
+
+<!--           <img :src="../static/images/+'@{user.getPhotoUrl()}'" width="80" height="60"-->
+<!--                th:src="@{images/${user.getPhotoUrl()}}"/>-->
+<!--        </div>-->
     </a>
     <div style='float:right;  margin:0px; border: 1px solid lightgray;'>
 
