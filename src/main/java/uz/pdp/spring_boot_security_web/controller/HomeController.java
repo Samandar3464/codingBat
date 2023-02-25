@@ -12,7 +12,9 @@ import uz.pdp.spring_boot_security_web.entity.SubjectEntity;
 import uz.pdp.spring_boot_security_web.entity.TopicEntity;
 import uz.pdp.spring_boot_security_web.entity.UserEntity;
 import uz.pdp.spring_boot_security_web.entity.role.RolePermissionEntity;
+import uz.pdp.spring_boot_security_web.model.dto.PrintTopicDto;
 import uz.pdp.spring_boot_security_web.repository.UserRepository;
+import uz.pdp.spring_boot_security_web.service.QuestionService;
 import uz.pdp.spring_boot_security_web.service.SubjectService;
 import uz.pdp.spring_boot_security_web.service.TopicService;
 
@@ -26,7 +28,7 @@ public class HomeController {
     private final SubjectService subjectService;
     private final TopicService topicService;
     private final UserRepository userRepository;
-
+    private final QuestionService questionService;
     @GetMapping("/")
     public String home(
             Model model
@@ -49,13 +51,18 @@ public class HomeController {
                 return "admin/userPageForAdmin";
             }
         }
-        List<SubjectEntity> subjectList = subjectService.getList();
+        List<SubjectEntity> subjectList=subjectService.getList();
         if (subjectList.isEmpty()) {
             return "index";
         }
-        List<TopicEntity> topicEntityList = topicService.getBySubjectTitleList(subjectList.get(0).getTitle());
+        List<TopicEntity> topicEntityList=topicService.getBySubjectTitleList(subjectList.get(0).getTitle());
+        if(user==null){
+            model.addAttribute("topics", topicEntityList);
+        }else{
+            List<PrintTopicDto> printTopicDto = questionService.printTopicWithSolvedQuestionNumbers(topicEntityList, user);
+            model.addAttribute("topics",printTopicDto);
+        }
         model.addAttribute("subjects", subjectList);
-        model.addAttribute("topics", topicEntityList);
         return "index";
     }
 

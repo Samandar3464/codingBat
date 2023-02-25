@@ -31,13 +31,13 @@ public class QuestionController {
 
     @GetMapping("/{name}")
     public String getTopicQuestions(@PathVariable String name, Model model){
-        List<QuestionEntity> questionEntities = questionService.getList(name);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserEntity user = (UserEntity) authentication.getPrincipal();
+        List<QuestionEntity> questionEntities = questionService.printSolvedAndUnsolvedQuestions(name, user);
         model.addAttribute("users", user);
         model.addAttribute("questions",questionEntities);
         model.addAttribute("subjects",subjectService.getList());
-        model.addAttribute("topic",topicService.findByName(name));
+        model.addAttribute("topic",name);
         return "allQuestions";
     }
 
@@ -63,8 +63,7 @@ public class QuestionController {
         QuestionEntity question = questionService.getById(id);
         String text = request.getParameter("text");
         if(text.equals("Solved")){
-            question.setTickIcon(question.getTickIcon().replace('1','2'));
-
+            questionService.makeQuestionSolved(user,question);
         }
         List<SubjectEntity> list = subjectService.getList();
         model.addAttribute("question",question);

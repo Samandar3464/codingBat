@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.jpa.domain.JpaSort;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,7 +40,6 @@ public class UserService implements BaseService<UserEntity, UserRegisterDTO> {
     private final PasswordEncoder passwordEncoder;
     @Qualifier("javasampleapproachMailSender")
     private final JavaMailSender javaMailSender;
-
     public boolean enableUser(String code) {
         Optional<UserEntity> byCode = userRepository.findByCode(code);
         if (!byCode.isPresent()) {

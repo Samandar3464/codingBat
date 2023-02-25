@@ -29,7 +29,7 @@ public class UserEntity implements UserDetails {
     private  String photoUrl="F:\\Java lessons\\codingBat\\src\\main\\resources\\static\\images";
     @OneToOne(cascade = CascadeType.ALL)
     private RolePermissionEntity rolePermissionEntities;
-    @ManyToMany(cascade =  CascadeType.ALL)
+    @ManyToMany(cascade =  CascadeType.ALL,fetch = FetchType.EAGER)
     private List<QuestionEntity> questionEntityList;
     private boolean isAccountNonExpired = true;
     private boolean isAccountNonLocked = true;

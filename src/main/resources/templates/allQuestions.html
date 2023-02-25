@@ -39,7 +39,7 @@
     <div style='float:right;  margin:0px; border: 1px solid lightgray;'>
 
           <a th:each="user: ${users}">
-              <td><a th:text="${user.getEmail()}"></a></td>
+              <td><a th:text="${users.getEmail()}"></a></td>
               <br>
               <br>
             <a href="/logout">Log out</a>
@@ -55,7 +55,7 @@
   <nav>
       <ul>
         <li class="h2" th:each="subject: ${subjects}">
-          <a th:text="${subject.getTitle()}" th:href="@{/{title}(title=${subject.getTitle()})}"></a>
+          <a th:text="${subject.getTitle()}" th:href="@{/subject/{title}(title=${subject.getTitle()})}"></a>
         </li>
       </ul>
   </nav>
@@ -63,7 +63,7 @@
     <br>
     <div class="table-title">
         <h3 style="display: inline">Topic : </h3>
-        <h2 style="display: inline" th:text="${topic.getName()}"></h2>
+        <h2 style="display: inline" th:text="${topic}"></h2>
     </div>
     <div class="floatleft">
       <table>
