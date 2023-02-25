@@ -15,6 +15,7 @@ import uz.pdp.spring_boot_security_web.entity.UserEntity;
 import uz.pdp.spring_boot_security_web.entity.role.RolePermissionEntity;
 import uz.pdp.spring_boot_security_web.exception.RecordNotFountException;
 import uz.pdp.spring_boot_security_web.model.dto.receive.UserRegisterDTO;
+import uz.pdp.spring_boot_security_web.model.dto.receive.UserRolePermissionDto;
 import uz.pdp.spring_boot_security_web.repository.TopicRepository;
 import uz.pdp.spring_boot_security_web.repository.UserRepository;
 
@@ -131,4 +132,21 @@ public class UserService implements BaseService<UserEntity, UserRegisterDTO> {
         return null;
     }
 
+    public void editUserRolePermission(int id, UserRolePermissionDto userRolePermissionDto) {
+        UserEntity user = userRepository.getById(id);
+        RolePermissionEntity rolePermissionEntities = user.getRolePermissionEntities();
+        List<String> roleEnum = rolePermissionEntities.getRoleEnum();
+        List<String> permissionEnum = rolePermissionEntities.getPermissionEnum();
+        if (!roleEnum.contains(userRolePermissionDto.getRole())){
+            roleEnum.add(userRolePermissionDto.getRole());
+        }
+        if (!permissionEnum.contains(userRolePermissionDto.getPermission())){
+            permissionEnum.add(userRolePermissionDto.getPermission());
+        }
+        rolePermissionEntities.setRoleEnum(roleEnum);
+        rolePermissionEntities.setPermissionEnum(permissionEnum);
+        user.setRolePermissionEntities(rolePermissionEntities);
+        userRepository.save(user);
+
+    }
 }
