@@ -39,9 +39,9 @@ public class UserService implements BaseService<UserEntity, UserRegisterDTO> {
     @Qualifier("javasampleapproachMailSender")
     private final JavaMailSender javaMailSender;
 
-    public boolean enableUser(String code){
+    public boolean enableUser(String code) {
         Optional<UserEntity> byCode = userRepository.findByCode(code);
-        if (!byCode.isPresent()){
+        if (!byCode.isPresent()) {
             throw new RecordNotFountException("This code live time end");
         }
         UserEntity userEntity = byCode.get();
@@ -86,21 +86,23 @@ public class UserService implements BaseService<UserEntity, UserRegisterDTO> {
         sendMail(
                 userRegisterDTO.getEmail(),
                 "Ro'yhatdan o'tishni verify ",
-                        "<a href='http://localhost:8080/api/user/verify/" + code  + "'>Tasdiqlash </a>"
+                "<a href='http://localhost:8080/api/user/verify/" + code + "'>Tasdiqlash </a>"
         );
         return userRepository.save(userEntity);
     }
 
     public UserEntity editUserEntity(int userId, MultipartFile file) throws IOException {
         Optional<UserEntity> byId = userRepository.findById(userId);
-        if (byId.isEmpty()){
+        if (byId.isEmpty()) {
             throw new RecordNotFountException("User not found");
         }
         UserEntity userEntity = byId.get();
         String photoUrl = savePhoto(file);
         userEntity.setPhotoUrl(photoUrl);
         return userRepository.save(userEntity);
-    };
+    }
+
+    ;
 
 
     public boolean sendMail(String sendingEmail, String massage, String code) {
@@ -119,34 +121,58 @@ public class UserService implements BaseService<UserEntity, UserRegisterDTO> {
     }
 
     private String savePhoto(MultipartFile file) throws IOException {
-        String linkPhoto="F:\\Java lessons\\codingBat\\src\\main\\resources\\static\\images";
-        if (file!=null) {
+        String linkPhoto = "F:\\Java lessons\\codingBat\\src\\main\\resources\\static\\images";
+        if (file != null) {
             String originalFileName = file.getOriginalFilename();
             String contentType = file.getContentType();
             String[] split = originalFileName.split("\\.");
-            String randomName = UUID.randomUUID().toString()+"."+split[split.length-1];
-            Path path = Paths.get(linkPhoto+"/"+randomName);
-            Files.copy(file.getInputStream(),path);
+            String randomName = UUID.randomUUID().toString() + "." + split[split.length - 1];
+            Path path = Paths.get(linkPhoto + "/" + randomName);
+            Files.copy(file.getInputStream(), path);
             return randomName;
         }
         return null;
     }
 
     public void editUserRolePermission(int id, UserRolePermissionDto userRolePermissionDto) {
+        final List<String> ROLE_LIST = List.of("ADMIN", "USER", "SUPER_ADMIN");
+        final List<String> PERMISSION_LIST = List.of("ADD", "GET", "UPDATE", "DELETE", "READ");
         UserEntity user = userRepository.getById(id);
         RolePermissionEntity rolePermissionEntities = user.getRolePermissionEntities();
         List<String> roleEnum = rolePermissionEntities.getRoleEnum();
         List<String> permissionEnum = rolePermissionEntities.getPermissionEnum();
-        if (!roleEnum.contains(userRolePermissionDto.getRole())){
-            roleEnum.add(userRolePermissionDto.getRole());
+        if (userRolePermissionDto.getRole()!=null&&!roleEnum.contains(userRolePermissionDto.getRole())) {
+            if (ROLE_LIST.contains(userRolePermissionDto.getRole())) {
+                roleEnum.add(userRolePermissionDto.getRole());
+                rolePermissionEntities.setRoleEnum(roleEnum);
+            }
         }
-        if (!permissionEnum.contains(userRolePermissionDto.getPermission())){
-            permissionEnum.add(userRolePermissionDto.getPermission());
+
+        if (userRolePermissionDto.getPermission()!=null&&!permissionEnum.contains(userRolePermissionDto.getPermission())) {
+            if (PERMISSION_LIST.contains(userRolePermissionDto.getPermission())) {
+                permissionEnum.add(userRolePermissionDto.getPermission());
+                rolePermissionEntities.setPermissionEnum(permissionEnum);
+            }
         }
-        rolePermissionEntities.setRoleEnum(roleEnum);
-        rolePermissionEntities.setPermissionEnum(permissionEnum);
         user.setRolePermissionEntities(rolePermissionEntities);
         userRepository.save(user);
+    }
 
+    public void deleteUserRolePermission(int id, UserRolePermissionDto userRolePermissionDto) {
+        UserEntity user = userRepository.getById(id);
+        RolePermissionEntity rolePermissionEntities = user.getRolePermissionEntities();
+        List<String> roleEnum = rolePermissionEntities.getRoleEnum();
+        List<String> permissionEnum = rolePermissionEntities.getPermissionEnum();
+        if (userRolePermissionDto.getRole() != null && roleEnum.contains(userRolePermissionDto.getRole())) {
+            roleEnum.remove(userRolePermissionDto.getRole());
+            rolePermissionEntities.setRoleEnum(roleEnum);
+        }
+
+        if (userRolePermissionDto.getPermission()!=null&&permissionEnum.contains(userRolePermissionDto.getPermission())) {
+            permissionEnum.remove(userRolePermissionDto.getPermission());
+            rolePermissionEntities.setPermissionEnum(permissionEnum);
+        }
+        user.setRolePermissionEntities(rolePermissionEntities);
+        userRepository.save(user);
     }
 }

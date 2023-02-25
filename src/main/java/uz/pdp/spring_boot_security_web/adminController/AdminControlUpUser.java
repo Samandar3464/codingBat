@@ -36,8 +36,14 @@ public class AdminControlUpUser {
 
     @PreAuthorize("hasRole('SUPER_ADMIN')")
     @PostMapping("/editUser/{id}")
-    public String editUser(@PathVariable int id, @ModelAttribute UserRolePermissionDto userRolePermissionDto) {
+    public String editUserRolePermission(@PathVariable int id, @ModelAttribute UserRolePermissionDto userRolePermissionDto) {
         userService.editUserRolePermission(id,userRolePermissionDto);
+        return "redirect:/admin/allUsers";
+    }
+    @PreAuthorize("hasRole('SUPER_ADMIN')")
+    @PostMapping("/deleteRPUser/{id}")
+    public String deleteUserRolePermission(@PathVariable int id, @ModelAttribute UserRolePermissionDto userRolePermissionDto) {
+        userService.deleteUserRolePermission(id,userRolePermissionDto);
         return "redirect:/admin/allUsers";
     }
 }
