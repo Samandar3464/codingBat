@@ -85,6 +85,7 @@ public class SecurityConfig {
                 .and()
                 .logout()
                 .logoutUrl("/logout")
+                .logoutSuccessUrl("/")
                 .deleteCookies("JSESSIONID");
 
         return http.build();

@@ -19,6 +19,7 @@ import uz.pdp.spring_boot_security_web.service.TopicService;
 import uz.pdp.spring_boot_security_web.service.UserService;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -33,8 +34,11 @@ public class QuestionController {
     public String getTopicQuestions(@PathVariable String name, Model model){
         List<QuestionEntity> questionEntities = questionService.getList(name);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserEntity user = (UserEntity) authentication.getPrincipal();
-        model.addAttribute("users", user);
+        UserEntity user = null;
+        if (!(authentication.getPrincipal() + "").equals("anonymousUser")) {
+            user = (UserEntity) authentication.getPrincipal();
+            model.addAttribute("users", user);
+        }
         model.addAttribute("questions",questionEntities);
         model.addAttribute("subjects",subjectService.getList());
         model.addAttribute("topic",topicService.findByName(name));
@@ -46,8 +50,11 @@ public class QuestionController {
         QuestionEntity byId = questionService.getById(id);
         List<SubjectEntity> list = subjectService.getList();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserEntity user = (UserEntity) authentication.getPrincipal();
-        model.addAttribute("users", user);
+        UserEntity user = null;
+        if (!(authentication.getPrincipal() + "").equals("anonymousUser")) {
+            user = (UserEntity) authentication.getPrincipal();
+            model.addAttribute("users", user);
+        }
         model.addAttribute("question",byId);
         model.addAttribute("subjects",list);
         String str = questionService.getTopicNameByQuestion(byId, list);

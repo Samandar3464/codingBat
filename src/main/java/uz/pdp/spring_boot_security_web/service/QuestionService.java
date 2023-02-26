@@ -11,7 +11,9 @@ import uz.pdp.spring_boot_security_web.model.dto.QuestionRequestDto;
 import uz.pdp.spring_boot_security_web.repository.QuestionRepository;
 import uz.pdp.spring_boot_security_web.repository.TopicRepository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RequiredArgsConstructor

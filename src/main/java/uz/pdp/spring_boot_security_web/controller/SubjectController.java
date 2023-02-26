@@ -25,8 +25,11 @@ public class SubjectController {
     public String getSubjectList(Model model) {
         List<SubjectEntity> list = subjectService.getList();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserEntity user = (UserEntity) authentication.getPrincipal();
-        model.addAttribute("users", user);
+        UserEntity user = null;
+        if (!(authentication.getPrincipal() + "").equals("anonymousUser")) {
+            user = (UserEntity) authentication.getPrincipal();
+            model.addAttribute("users", user);
+        }
         model.addAttribute("subjects", subjectService.getList());
         model.addAttribute("topics", topicService.getBySubjectTitleList(list.get(0).getTitle()));
         return "index";

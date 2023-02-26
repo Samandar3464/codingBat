@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import uz.pdp.spring_boot_security_web.entity.QuestionEntity;
+import uz.pdp.spring_boot_security_web.entity.TopicEntity;
 import uz.pdp.spring_boot_security_web.entity.UserEntity;
 import uz.pdp.spring_boot_security_web.entity.role.RolePermissionEntity;
 import uz.pdp.spring_boot_security_web.exception.RecordNotFountException;
@@ -25,10 +26,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +34,7 @@ public class UserService implements BaseService<UserEntity, UserRegisterDTO> {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final TopicRepository topicRepository;
     @Qualifier("javasampleapproachMailSender")
     private final JavaMailSender javaMailSender;
 
@@ -141,14 +140,14 @@ public class UserService implements BaseService<UserEntity, UserRegisterDTO> {
         RolePermissionEntity rolePermissionEntities = user.getRolePermissionEntities();
         List<String> roleEnum = rolePermissionEntities.getRoleEnum();
         List<String> permissionEnum = rolePermissionEntities.getPermissionEnum();
-        if (userRolePermissionDto.getRole()!=null&&!roleEnum.contains(userRolePermissionDto.getRole())) {
+        if (userRolePermissionDto.getRole() != null && !roleEnum.contains(userRolePermissionDto.getRole())) {
             if (ROLE_LIST.contains(userRolePermissionDto.getRole())) {
                 roleEnum.add(userRolePermissionDto.getRole());
                 rolePermissionEntities.setRoleEnum(roleEnum);
             }
         }
 
-        if (userRolePermissionDto.getPermission()!=null&&!permissionEnum.contains(userRolePermissionDto.getPermission())) {
+        if (userRolePermissionDto.getPermission() != null && !permissionEnum.contains(userRolePermissionDto.getPermission())) {
             if (PERMISSION_LIST.contains(userRolePermissionDto.getPermission())) {
                 permissionEnum.add(userRolePermissionDto.getPermission());
                 rolePermissionEntities.setPermissionEnum(permissionEnum);
@@ -167,8 +166,7 @@ public class UserService implements BaseService<UserEntity, UserRegisterDTO> {
             roleEnum.remove(userRolePermissionDto.getRole());
             rolePermissionEntities.setRoleEnum(roleEnum);
         }
-
-        if (userRolePermissionDto.getPermission()!=null&&permissionEnum.contains(userRolePermissionDto.getPermission())) {
+        if (userRolePermissionDto.getPermission() != null && permissionEnum.contains(userRolePermissionDto.getPermission())) {
             permissionEnum.remove(userRolePermissionDto.getPermission());
             rolePermissionEntities.setPermissionEnum(permissionEnum);
         }

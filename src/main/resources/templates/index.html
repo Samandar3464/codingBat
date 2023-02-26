@@ -56,18 +56,18 @@
     <div class="tabin">
         <div class="floatleft">
             <table>
-                <tr th:each="topic: ${topics}">
-                    <td>
+                <tr th:each="topic: ${topics}" >
+
+                      <td>
                         <div class="summ">
                             <a th:href="'/question/'+${topic.getName()}">
                                 <span class="h3">
-                                    <h3 th:text="${topic.getName()}"></h3>
-                                    <h5 th:text="'all'+${topics.size()} + 'solved' + users.get" ></h5>
+                                    <h3 th:text="${topic.getName()}" ></h3>
                                 </span>
                             </a>
                         </div>
-                    </td>
-
+                      </td>
+                    </tr>
                 </tr>
 
             </table>

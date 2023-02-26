@@ -26,16 +26,9 @@
 <span th:if="${users!=null}">
     <a th:each="user: ${users}">
     <div style='float:right;  margin:0px; border: 1px solid lightgray;'>
-
-<!--  <img th:src="@{/static/images/avatar.jpeg}"/>-->
-
          <img :src="../static/images/avatar.jpeg" width="80" height="60"
               th:src="@{images/avatar.jpeg}"/>
     </div>
-
-        <!--           <img :src="../static/images/+'@{user.getPhotoUrl()}'" width="80" height="60"-->
-        <!--                th:src="@{images/${user.getPhotoUrl()}}"/>-->
-        <!--        </div>-->
     </a>
     <div style='float:right;  margin:0px; border: 1px solid lightgray;'>
 
