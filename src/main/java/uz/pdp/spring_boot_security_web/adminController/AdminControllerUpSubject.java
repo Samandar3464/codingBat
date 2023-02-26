@@ -20,6 +20,7 @@ import java.util.List;
 @RequestMapping("/adminSubject")
 public class AdminControllerUpSubject {
     private final SubjectService subjectService;
+    private final SubjectRepository subjectRepository;
 
     @PreAuthorize("hasRole('ADMIN') and hasAuthority('ADD') or hasRole('SUPER_ADMIN')")
     @PostMapping("/addSubject")
@@ -46,6 +47,7 @@ public class AdminControllerUpSubject {
     @PreAuthorize("hasRole('ADMIN') and hasAuthority('DELETE') or hasRole('SUPER_ADMIN')")
     @GetMapping("/deleteSubject/{id}")
     public String getSubjectsList(@PathVariable("id") int id) {
+        List<SubjectEntity> all = subjectRepository.findAll();
         boolean delete = subjectService.delete(id);
         if (delete){
             return "redirect:/adminSubject/subjects";

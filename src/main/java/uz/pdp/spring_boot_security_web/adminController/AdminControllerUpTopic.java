@@ -25,8 +25,11 @@ public class AdminControllerUpTopic {
     @PreAuthorize("hasRole('ADMIN') and hasAuthority('ADD') or hasRole('SUPER_ADMIN')")
     @PostMapping("/addTopic")
     public String addTopic(@ModelAttribute TopicRequestDto topicRequestDTO) {
-        topicService.add(topicRequestDTO);
-        return "redirect:/adminTopic/topics";
+        TopicEntity topicEntity = topicService.add(topicRequestDTO);
+        if (topicEntity!=null){
+            return "redirect:/adminTopic/topics";
+        }
+        return "redirect:/404";
     }
 
     @PreAuthorize("hasRole('ADMIN') and hasAuthority('READ') or hasRole('SUPER_ADMIN')")

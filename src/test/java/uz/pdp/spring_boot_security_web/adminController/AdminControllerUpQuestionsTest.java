@@ -71,7 +71,7 @@ class AdminControllerUpQuestionsTest extends BaseTest {
         final MockHttpServletRequestBuilder requestBuilder
                 = post("/adminTopic/addTopic")
                 .param("name", "Array")
-                .param("subjectId", String.valueOf(1));
+                .param("subject", "Kotlin");
         return mockMvc.perform(requestBuilder);
     }
 
