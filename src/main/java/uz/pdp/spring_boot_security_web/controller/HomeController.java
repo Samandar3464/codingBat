@@ -12,6 +12,7 @@ import uz.pdp.spring_boot_security_web.entity.SubjectEntity;
 import uz.pdp.spring_boot_security_web.entity.TopicEntity;
 import uz.pdp.spring_boot_security_web.entity.UserEntity;
 import uz.pdp.spring_boot_security_web.entity.role.RolePermissionEntity;
+import uz.pdp.spring_boot_security_web.model.dto.PrintTopicDto;
 import uz.pdp.spring_boot_security_web.repository.UserRepository;
 import uz.pdp.spring_boot_security_web.service.QuestionService;
 import uz.pdp.spring_boot_security_web.service.SubjectService;
@@ -55,8 +56,9 @@ public class HomeController {
                     return "index";
                 }
                 List<TopicEntity> topicEntityList = topicService.getBySubjectTitleList(subjectList.get(0).getTitle());
+                List<PrintTopicDto> printTopicDto = questionService.printTopicWithSolvedQuestionNumbers(topicEntityList, user);
+                model.addAttribute("topics",printTopicDto);
                 model.addAttribute("subjects", subjectList);
-                model.addAttribute("topics", topicEntityList);
                 return "index";
             }
         }
@@ -65,13 +67,8 @@ public class HomeController {
             return "index";
         }
         List<TopicEntity> topicEntityList=topicService.getBySubjectTitleList(subjectList.get(0).getTitle());
-        if(user==null){
-            model.addAttribute("topics", topicEntityList);
-        }else{
-            List<PrintTopicDto> printTopicDto = questionService.printTopicWithSolvedQuestionNumbers(topicEntityList, user);
-            model.addAttribute("topics",printTopicDto);
-        }
         model.addAttribute("subjects", subjectList);
+        model.addAttribute("topics", topicEntityList);
         return "index";
     }
 

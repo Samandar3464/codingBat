@@ -9,14 +9,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import uz.pdp.spring_boot_security_web.entity.QuestionEntity;
 import uz.pdp.spring_boot_security_web.entity.SubjectEntity;
-import uz.pdp.spring_boot_security_web.entity.TopicEntity;
 import uz.pdp.spring_boot_security_web.entity.UserEntity;
-import uz.pdp.spring_boot_security_web.model.dto.QuestionRequestDto;
-import uz.pdp.spring_boot_security_web.repository.TopicRepository;
 import uz.pdp.spring_boot_security_web.service.QuestionService;
 import uz.pdp.spring_boot_security_web.service.SubjectService;
-import uz.pdp.spring_boot_security_web.service.TopicService;
-import uz.pdp.spring_boot_security_web.service.UserService;
 
 import java.util.List;
 
@@ -26,12 +21,9 @@ import java.util.List;
 public class QuestionController {
     private final QuestionService questionService;
     private final SubjectService subjectService;
-    private final TopicRepository topicService;
-    private final UserService userService;
 
     @GetMapping("/{name}")
     public String getTopicQuestions(@PathVariable String name, Model model){
-        List<QuestionEntity> questionEntities = questionService.getList(name);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserEntity user = null;
         if (!(authentication.getPrincipal() + "").equals("anonymousUser")) {
@@ -40,8 +32,9 @@ public class QuestionController {
             model.addAttribute("questions",questionEntities);
             model.addAttribute("users", user);
         }
-        model.addAttribute("questions",questionEntities);
+        List<QuestionEntity> questionEntities = questionService.getList(name);
         model.addAttribute("subjects",subjectService.getList());
+        model.addAttribute("questions",questionEntities);
         model.addAttribute("topic",name);
         return "allQuestions";
     }

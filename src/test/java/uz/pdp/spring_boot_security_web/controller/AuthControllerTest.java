@@ -27,13 +27,14 @@ class AuthControllerTest extends BaseTest {
 
     @Test
     public void addUserShouldReturnOKStatus() throws Exception {
-//        callAdd().andExpect(view().name("Verify account "));
+        callAdd().andExpect(view().name("verify"));
 
     }
     @Test
     public void addUserShouldThrowUserExist() throws Exception {
         callAdd();
-        callAdd().andExpect(status().isBadRequest());
+//        callAdd().andExpect(status().isBadRequest());
+        callAdd().andExpect(view().name("404"));
     }
 
     private ResultActions callAdd() throws Exception {

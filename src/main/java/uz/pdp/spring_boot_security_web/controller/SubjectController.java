@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import uz.pdp.spring_boot_security_web.entity.SubjectEntity;
+import uz.pdp.spring_boot_security_web.entity.TopicEntity;
 import uz.pdp.spring_boot_security_web.entity.UserEntity;
 import uz.pdp.spring_boot_security_web.model.dto.PrintTopicDto;
 import uz.pdp.spring_boot_security_web.model.dto.SubjectRequestDTO;
@@ -45,12 +46,17 @@ public class SubjectController {
         SubjectEntity byTitle = subjectService.getByTitle(title);
         List<SubjectEntity> list = subjectService.getList();
         if (byTitle!=null){
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            UserEntity user = (UserEntity) authentication.getPrincipal();
-            model.addAttribute("users", user);
             model.addAttribute("subjects", list);
-            List<PrintTopicDto> printTopicDto = questionService.printTopicWithSolvedQuestionNumbers(topicService.getBySubjectTitleList(title), user);
-            model.addAttribute("topics", printTopicDto);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            UserEntity user = null;
+            if (!(authentication.getPrincipal() + "").equals("anonymousUser")) {
+                user = (UserEntity) authentication.getPrincipal();
+                model.addAttribute("users", user);
+                List<PrintTopicDto> printTopicDto = questionService.printTopicWithSolvedQuestionNumbers(topicService.getBySubjectTitleList(title), user);
+                model.addAttribute("topics", printTopicDto);
+            }
+            List<TopicEntity> topicEntities = topicService.getBySubjectTitleList(title);
+            model.addAttribute("topics", topicEntities);
             return "index";
 
         }else {
