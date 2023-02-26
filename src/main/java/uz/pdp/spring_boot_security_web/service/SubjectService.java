@@ -24,7 +24,7 @@ public class SubjectService implements BaseService<SubjectEntity, SubjectRequest
     @Override
     public SubjectEntity getById(int id) {
         Optional<SubjectEntity> byId = subjectRepository.findById(id);
-        if (!byId.isPresent()) {
+        if (byId.isEmpty()) {
             throw new RecordNotFountException("subject not found");
         }
         return byId.orElse(null);
@@ -33,7 +33,7 @@ public class SubjectService implements BaseService<SubjectEntity, SubjectRequest
     @Override
     public boolean delete(int id) {
         Optional<SubjectEntity> byId = subjectRepository.findById(id);
-        if (!byId.isPresent()) {
+        if (byId.isEmpty()) {
             throw new RecordNotFountException("subject not found");
         }
         subjectRepository.deleteById(id);
@@ -52,7 +52,7 @@ public class SubjectService implements BaseService<SubjectEntity, SubjectRequest
 
     public SubjectEntity getByTitle(String title) {
         Optional<SubjectEntity> byId = subjectRepository.findByTitle(title);
-        if (!byId.isPresent()) {
+        if (byId.isEmpty()) {
             throw new IllegalArgumentException(title + " Subject not found");
         }
         return byId.get();
@@ -61,7 +61,7 @@ public class SubjectService implements BaseService<SubjectEntity, SubjectRequest
 
     public SubjectEntity getById(Integer id) {
         Optional<SubjectEntity> byId = subjectRepository.findById(id);
-        if (!byId.isPresent()) {
+        if (byId.isEmpty()) {
             throw new IllegalArgumentException(" Subject not found");
         }
         return byId.get();

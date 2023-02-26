@@ -19,7 +19,6 @@ import uz.pdp.spring_boot_security_web.service.TopicService;
 import uz.pdp.spring_boot_security_web.service.UserService;
 
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -37,11 +36,13 @@ public class QuestionController {
         UserEntity user = null;
         if (!(authentication.getPrincipal() + "").equals("anonymousUser")) {
             user = (UserEntity) authentication.getPrincipal();
+            List<QuestionEntity> questionEntities = questionService.printSolvedAndUnsolvedQuestions(name, user);
+            model.addAttribute("questions",questionEntities);
             model.addAttribute("users", user);
         }
         model.addAttribute("questions",questionEntities);
         model.addAttribute("subjects",subjectService.getList());
-        model.addAttribute("topic",topicService.findByName(name));
+        model.addAttribute("topic",name);
         return "allQuestions";
     }
 
@@ -70,8 +71,7 @@ public class QuestionController {
         QuestionEntity question = questionService.getById(id);
         String text = request.getParameter("text");
         if(text.equals("Solved")){
-            question.setTickIcon(question.getTickIcon().replace('1','2'));
-
+            questionService.makeQuestionSolved(user,question);
         }
         List<SubjectEntity> list = subjectService.getList();
         model.addAttribute("question",question);

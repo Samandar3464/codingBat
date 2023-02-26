@@ -49,20 +49,24 @@
     <nav>
         <ul>
             <li class="h2" th:each="subject: ${subjects}">
-                <a th:text="${subject.getTitle()}" th:href="@{/{title}(title=${subject.getTitle()})}"></a>
+                <a th:text="${subject.getTitle()}" th:href="@{/subject/{title}(title=${subject.getTitle()})}"></a>
             </li>
         </ul>
     </nav>
     <div class="tabin">
         <div class="floatleft">
             <table>
-                <tr th:each="topic: ${topics}" >
-
-                      <td>
+                <tr th:each="topic: ${topics}">
+                    <td>
                         <div class="summ">
                             <a th:href="'/question/'+${topic.getName()}">
                                 <span class="h3">
-                                    <h3 th:text="${topic.getName()}" ></h3>
+                                    <h3 th:text="${topic.getName()}"></h3>
+                                    <span th:if="${users!=null}">
+                                        <h5 th:text="'All : '+${topic.getAllQuestions()}"></h5>
+                                        <h5 th:text="'Solved : '+${topic.getSolvedByUser()}" style="color: green"></h5>
+                                        <h5 th:text="'Unsolved : '+${topic.getUnsolved()}" style="color: red"></h5>
+                                    </span>
                                 </span>
                             </a>
                         </div>

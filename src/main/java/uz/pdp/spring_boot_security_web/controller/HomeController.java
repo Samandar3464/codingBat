@@ -19,7 +19,6 @@ import uz.pdp.spring_boot_security_web.service.TopicService;
 import uz.pdp.spring_boot_security_web.service.UserService;
 
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -29,7 +28,7 @@ public class HomeController {
     private final SubjectService subjectService;
     private final TopicService topicService;
     private final UserService userService;
-
+    private final QuestionService questionService;
     @GetMapping("/")
     public String home(
             Model model
@@ -61,13 +60,18 @@ public class HomeController {
                 return "index";
             }
         }
-        List<SubjectEntity> subjectList = subjectService.getList();
+        List<SubjectEntity> subjectList=subjectService.getList();
         if (subjectList.isEmpty()) {
             return "index";
         }
-        List<TopicEntity> topicEntityList = topicService.getBySubjectTitleList(subjectList.get(0).getTitle());
+        List<TopicEntity> topicEntityList=topicService.getBySubjectTitleList(subjectList.get(0).getTitle());
+        if(user==null){
+            model.addAttribute("topics", topicEntityList);
+        }else{
+            List<PrintTopicDto> printTopicDto = questionService.printTopicWithSolvedQuestionNumbers(topicEntityList, user);
+            model.addAttribute("topics",printTopicDto);
+        }
         model.addAttribute("subjects", subjectList);
-        model.addAttribute("topics", topicEntityList);
         return "index";
     }
 

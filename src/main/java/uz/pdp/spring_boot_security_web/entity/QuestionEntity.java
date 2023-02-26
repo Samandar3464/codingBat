@@ -19,6 +19,6 @@ public class QuestionEntity extends BaseEntity {
     private String text;
     private String example;
     private String tickIcon;
-    @ManyToOne()
+    @ManyToOne
     private TopicEntity topicEntity;
 }

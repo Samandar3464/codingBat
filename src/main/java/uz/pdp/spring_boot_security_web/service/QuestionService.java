@@ -2,18 +2,22 @@ package uz.pdp.spring_boot_security_web.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import uz.pdp.spring_boot_security_web.entity.QuestionEntity;
 import uz.pdp.spring_boot_security_web.entity.SubjectEntity;
 import uz.pdp.spring_boot_security_web.entity.TopicEntity;
+import uz.pdp.spring_boot_security_web.entity.UserEntity;
 import uz.pdp.spring_boot_security_web.exception.RecordAlreadyExistException;
 import uz.pdp.spring_boot_security_web.exception.RecordNotFountException;
+import uz.pdp.spring_boot_security_web.model.dto.PrintTopicDto;
 import uz.pdp.spring_boot_security_web.model.dto.QuestionRequestDto;
 import uz.pdp.spring_boot_security_web.repository.QuestionRepository;
 import uz.pdp.spring_boot_security_web.repository.TopicRepository;
+import uz.pdp.spring_boot_security_web.repository.UserRepository;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -21,6 +25,8 @@ import java.util.Optional;
 public class QuestionService implements BaseService<QuestionEntity, QuestionRequestDto> {
     private final QuestionRepository questionRepository;
     private final TopicRepository topicRepository;
+    private final SubjectService subjectRepository;
+    private final UserRepository userRepository;
 
     @Override
     public List<QuestionEntity> getList() {
@@ -61,7 +67,7 @@ public class QuestionService implements BaseService<QuestionEntity, QuestionRequ
                 .text(questionRequestDto.getText())
                 .example(questionRequestDto.getExample())
                 .tickIcon("https://codingbat.com/c1.jpg")
-                .topicEntity(topicRepository.findByName(questionRequestDto.getTopicName()))
+                .topicEntity(getTopicByNameAndSubjectId(questionRequestDto))
                 .build();
         return questionRepository.save(questionEntity);
     }
@@ -90,5 +96,57 @@ public class QuestionService implements BaseService<QuestionEntity, QuestionRequ
             }
         }
         return null;
+    }
+
+    private TopicEntity getTopicByNameAndSubjectId(QuestionRequestDto questionRequestDto) {
+        Optional<TopicEntity> topicOptional = topicRepository.findByNameAndSubjectEntityId(questionRequestDto.getTopicName(),
+                subjectRepository.getByTitle(questionRequestDto.getSubjectName()).getId());
+        if (topicOptional.isPresent()) {
+            return topicOptional.get();
+        } else {
+            throw new RecordNotFountException("Topic not found");
+        }
+    }
+
+    public void makeQuestionSolved(UserEntity user,QuestionEntity question){
+        List<QuestionEntity> questionEntityList = user.getQuestionEntityList();
+        questionEntityList.add(question);
+        user.setQuestionEntityList(questionEntityList);
+        userRepository.save(user);
+    }
+
+    public List<QuestionEntity> printSolvedAndUnsolvedQuestions(String name,UserEntity user){
+        List<QuestionEntity> questionEntities = getList(name);
+        List<QuestionEntity> userQuentionList = user.getQuestionEntityList();
+        for (QuestionEntity questionEntity : questionEntities) {
+            for (QuestionEntity userQuestion : userQuentionList){
+                if(questionEntity.getId()==userQuestion.getId()) {
+                    questionEntity.setTickIcon(questionEntity.getTickIcon().replace("1", "2"));
+                }
+            }
+        }
+        return questionEntities;
+    }
+
+    public List<PrintTopicDto> printTopicWithSolvedQuestionNumbers(List<TopicEntity> list, UserEntity user){
+        List<PrintTopicDto> resList = new LinkedList<>();
+        for (TopicEntity topic : list) {
+            PrintTopicDto t = new PrintTopicDto();
+            t.setName(topic.getName());
+            for (QuestionEntity questionEntity : topic.getQuestionEntities()) {
+                for (QuestionEntity question : user.getQuestionEntityList()) {
+                    if(question.getId()==questionEntity.getId()){
+                        int solved = t.getSolvedByUser();
+                        t.setSolvedByUser(++solved);
+                    }
+                }
+            }
+            int all = topic.getQuestionEntities().size();
+            int unsolved = all-t.getSolvedByUser();
+            t.setAllQuestions(all);
+            t.setUnsolved(unsolved);
+            resList.add(t);
+        }
+        return resList;
     }
 }
