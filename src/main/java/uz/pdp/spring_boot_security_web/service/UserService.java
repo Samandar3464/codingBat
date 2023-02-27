@@ -8,6 +8,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -70,7 +71,7 @@ public class UserService implements BaseService<UserEntity, UserRegisterDTO> {
             userRepository.deleteById(id);
             return true;
         }
-        return false;
+        throw  new RecordNotFountException("User  not found");
     }
 
     @Override
@@ -85,8 +86,8 @@ public class UserService implements BaseService<UserEntity, UserRegisterDTO> {
         userEntity.setCode(code);
         sendMail(
                 userRegisterDTO.getEmail(),
-                "Ro'yhatdan o'tishni verify ",
-                "<a href='http://localhost:8080/api/user/verify/" + code + "'>Tasdiqlash </a>"
+                "Verify code for activate account ",
+                "<a href='http://localhost:8080/api/user/verify/" + code + "'>  Confirmation </a>"
         );
         return userRepository.save(userEntity);
     }
@@ -137,7 +138,11 @@ public class UserService implements BaseService<UserEntity, UserRegisterDTO> {
     public void editUserRolePermission(int id, UserRolePermissionDto userRolePermissionDto) {
         final List<String> ROLE_LIST = List.of("ADMIN", "USER", "SUPER_ADMIN");
         final List<String> PERMISSION_LIST = List.of("ADD", "GET", "UPDATE", "DELETE", "READ");
-        UserEntity user = userRepository.getById(id);
+        Optional<UserEntity> byId = userRepository.findById(id);
+        if (byId.isEmpty()){
+            throw new RecordNotFountException("User not found");
+        }
+        UserEntity user = byId.get();
         RolePermissionEntity rolePermissionEntities = user.getRolePermissionEntities();
         List<String> roleEnum = rolePermissionEntities.getRoleEnum();
         List<String> permissionEnum = rolePermissionEntities.getPermissionEnum();

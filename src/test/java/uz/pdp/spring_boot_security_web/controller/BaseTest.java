@@ -27,7 +27,6 @@ public class BaseTest {
     protected SubjectRepository subjectRepository;
     @Autowired
     protected   TopicRepository topicRepository;
-
     @Autowired
     protected QuestionRepository questionRepository;
     protected static final PostgreSQLContainer<?> postgres;

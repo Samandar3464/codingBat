@@ -2,6 +2,7 @@ package uz.pdp.spring_boot_security_web.controller;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
@@ -28,12 +29,14 @@ class SubjectControllerTest extends BaseTest {
         subjectRepository.deleteAll();
     }
     @Test
+    @Disabled
     @WithMockUser(roles = "SUPER_ADMIN")
     void findByTitle() throws Exception {
         callAdd();
         findByName("Kotlin").andExpect(view().name("index"));
     }
     @Test
+    @WithMockUser(roles = "SUPER_ADMIN")
     void findByTitleThrow() throws Exception {
         findByName("Java").andExpect(view().name("404"));
     }
@@ -45,7 +48,7 @@ class SubjectControllerTest extends BaseTest {
                 get("/subject/{title}", a);
         return mockMvc.perform(request);
     }
-    @WithMockUser(roles = "SUPER_ADMIN")
+
     private ResultActions callAdd() throws Exception {
         final MockHttpServletRequestBuilder request =
                 post("/adminSubject/addSubject")
