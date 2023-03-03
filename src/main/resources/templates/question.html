@@ -1,5 +1,5 @@
 <!doctype html>
-<head>
+<head xmlns="http://www.w3.org/1999/html">
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="codingbat.css">
 
@@ -54,76 +54,53 @@
         </ul>
     </nav>
     <div class="tabin">
-<!--        <div class="floatleft">-->
-<!--            <table>-->
-<!--                &lt;!&ndash;        <tr th:object ="question:${questionById}">&ndash;&gt;-->
-<!--                <td>-->
-<!--                    <div class="summ"><br th:text="${question.getName()}">-->
-<!--                        <br>-->
-<!--                        <br th:text="${question.getText()}">-->
-<!--                        <br>-->
-<!--                        <br th:text="${question.getExample()}"><br>-->
-<!--                    </div>-->
-<!--                </td>-->
-
-<!--                </tr>-->
-
-<!--            </table>-->
-<!--        </div>-->
-
         <div class=tabin>
-            <div class=indent><span class=h2 th:text="${topic}"></span> &gt; <span class=h2 th:text="${question.getName()}"></span>
-                <table border=0>
+            <table border="0">
+                <tbody>
                     <tr>
-                        <td valign=top>
-                            <div class=minh><p class=max2 th:text="${question.getText()}"></p></div>
-                            <br>
-                            <div class=minh><p class=max2 th:text="${question.getExample()}"></p></div>
-<!--                            <p>-->
-<!--                                <button class=go onclick='sendCodeAce(); focusEdit(); return false;'>Go</button>-->
-<!--                                ...Save, Compile, Run (ctrl-enter)<span style='margin-left:60px;'/>-->
-<!--                                <button class=gray-->
-<!--                                        onclick='document.getElementById("results").innerHTML="<b>Hint:</b><br>"+unescape("The code <pre>return %26quot;xyz%26quot; + name;</pre> would return %26quot;xyzBob%26quot; for the %26quot;Bob%26quot; example, so it%26#39;s not a solution, but it shows the right code pattern."); sendRemark("h1");'>-->
-<!--                                    Show Hint-->
-<!--                                </button>-->
-                            <form th:action="@{/question/response/{id}(id=${question.getId()})}" method="post" name=codeform>
-                                <label>
-                                    <input type="text" name="text" placeholder="Please insert your answer...">
-                                </label>
-                                <!--                                <div id='ace_div'>public String helloName(String name) {-->
-
-<!--                                    }-->
-<!--                                </div>-->
-<!--                                <script>var editor = ace.edit('ace_div');-->
-<!--                                editor.renderer.setShowGutter(false);-->
-<!--                                editor.setTheme('ace/theme/chrome');-->
-<!--                                editor.getSession().setMode('ace/mode/java');-->
-<!--                                editor.getSession().setTabSize(2);-->
-<!--                                editor.getSession().setUseSoftTabs(true);-->
-<!--                                document.ace_editor = editor;-->
-<!--                                editor.$blockScrolling = Infinity;-->
-<!--                                setupKey(editor);-->
-<!--                                startCursor(editor, 'java');-->
-<!--                                </script>-->
-                                <button type="submit">Submit answer</button>
-                            </form>
+                    <td>
+                        <div class=indent><span class=h2 th:text="${topic}"></span> &gt; <span class=h2
+                                                                                               th:text="${question.getName()}"></span>
+                            <table border=0>
+                                <tr>
+                                    <td valign=top>
+                                        <div class=minh><p class=max2 th:text="${question.getText()}"></p></div>
+                                        <br>
+                                        <div class=minh><p class=max2 th:text="${question.getExample()}"></p></div>
+                                        <form th:action="@{/question/response/{id}(id=${question.getId()})}" method="post"
+                                              name=codeform>
+                                <textarea rows="30" cols="80" name="code" th:text="${compile}">
+                                </textarea><br>
+                                            <button type="submit">Submit answer</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </td>
+                        <td th:if="${passedTestCases!=null}" width="500" valign="top">
+                            <div id="results" style="margin-top:10em;margin-left:1em;">
+                                <center>
+                                <div id="tests">
+                                    <table class="out">
+                                        <tr>
+                                            <th>Test Cases</th>
+                                        </tr>
+                                        <tbody th:each="testCase: ${passedTestCases}">
+                                        <tr>
+                                            <td th:text="${testCase}"></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <br>
+                                    <h3 th:text="${passMessage}"></h3></center>
+                            </div>
                         </td>
-                    </tr>
-                </table>
-            </div>
+                </tr>
+                </tbody>
+            </table>
         </div>
-
-<!--            <button class=go onclick='sendCodeAce(); focusEdit(); return false;'>Go</button>Editor font size %:<select name=font onchange='fontChange(event);'>-->
-<!--            <option>75</option>-->
-<!--            <option selected>100</option>-->
-<!--            <option>125</option>-->
-<!--            <option>150</option>-->
-
-<!--        </select><br>Shorter output <input type=checkbox name=outputonly><input type=hidden name=id value="p171896">-->
-<!--            <input type=hidden name=owner value=''><input type=hidden name=cuname value=''><input type=hidden name=adate-->
-<!--                                                                                                  value='20230223-153050z'></form></td>-->
-<!--        <td width=500 valign=top>-->
-
     </div>
 </div>
 <style>

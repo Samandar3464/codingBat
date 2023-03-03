@@ -45,7 +45,7 @@ public class SubjectController {
     public String getByTitle(@PathVariable("title") String title,Model model) {
         SubjectEntity byTitle = subjectService.getByTitle(title);
         List<SubjectEntity> list = subjectService.getList();
-        if (byTitle!=null){
+        if (byTitle!=null) {
             model.addAttribute("subjects", list);
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             UserEntity user = null;
@@ -54,12 +54,13 @@ public class SubjectController {
                 model.addAttribute("users", user);
                 List<PrintTopicDto> printTopicDto = questionService.printTopicWithSolvedQuestionNumbers(topicService.getBySubjectTitleList(title), user);
                 model.addAttribute("topics", printTopicDto);
+            } else {
+                List<TopicEntity> topicEntities = topicService.getBySubjectTitleList(title);
+                model.addAttribute("topics", topicEntities);
             }
-            List<TopicEntity> topicEntities = topicService.getBySubjectTitleList(title);
-            model.addAttribute("topics", topicEntities);
             return "index";
-
-        }else {
+        }
+        else {
             return "redirect:/404";
         }
     }
