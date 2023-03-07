@@ -54,13 +54,13 @@ public class SubjectController {
                 model.addAttribute("users", user);
                 List<PrintTopicDto> printTopicDto = questionService.printTopicWithSolvedQuestionNumbers(topicService.getBySubjectTitleList(title), user);
                 model.addAttribute("topics", printTopicDto);
-                return "index";
+            } else {
+                List<TopicEntity> topicEntities = topicService.getBySubjectTitleList(title);
+                model.addAttribute("topics", topicEntities);
             }
-            List<TopicEntity> topicEntities = topicService.getBySubjectTitleList(title);
-            model.addAttribute("topics", topicEntities);
             return "index";
-
-        }else {
+        }
+        else {
             return "redirect:/404";
         }
     }

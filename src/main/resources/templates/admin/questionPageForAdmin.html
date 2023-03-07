@@ -334,6 +334,8 @@
                             <span>Topic Page</span></a>
                         <a th:href="@{/adminSubject/subjects}" class="btn btn-success">
                             <span>Subject Page</span></a>
+                        <a th:href="@{/admin/testCase/page}" class="btn btn-success">
+                            <span>Test Case Page</span></a>
                     </div>
                 </div>
             </div>
@@ -343,8 +345,6 @@
                         <h2>Manage <b>question </b></h2>
                     </div>
                     <div class="col-sm-6">
-<!--                        <a href="#editEmployeeModal" class="btn btn-success" data-toggle="modal"><i-->
-<!--                                class="material-icons">&#xf040;</i> <span>Edit question</span></a>-->
                         <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i
                                 class="material-icons">&#xE147;</i> <span>Add New question</span></a>
                     </div>
@@ -447,6 +447,10 @@
                     <div class="form-group">
                         <label>Topic Name</label>
                         <input type="text" class="form-control" name="topicName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Insert return type, Method name and its two Parameters in one String with comma seperated</label>
+                        <input type="text" class="form-control" name="methodAndParams" required placeholder="returnType,methodName,firstParam,secondParma">
                     </div>
                     <div class="form-group">
                         <label>Subject Name</label>

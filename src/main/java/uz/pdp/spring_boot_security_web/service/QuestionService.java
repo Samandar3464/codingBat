@@ -67,6 +67,7 @@ public class QuestionService implements BaseService<QuestionEntity, QuestionRequ
                 .text(questionRequestDto.getText())
                 .example(questionRequestDto.getExample())
                 .tickIcon("https://codingbat.com/c1.jpg")
+                .methodAndParams(questionRequestDto.getMethodAndParams())
                 .topicEntity(getTopicByNameAndSubjectId(questionRequestDto))
                 .build();
         return questionRepository.save(questionEntity);
@@ -112,7 +113,12 @@ public class QuestionService implements BaseService<QuestionEntity, QuestionRequ
         List<QuestionEntity> questionEntityList = user.getQuestionEntityList();
         questionEntityList.add(question);
         user.setQuestionEntityList(questionEntityList);
-        userRepository.save(user);
+        try {
+            userRepository.save(user);
+        }catch (Exception e){
+            System.err.println("Trying to solve the same question second time");
+            e.printStackTrace();
+        }
     }
 
     public List<QuestionEntity> printSolvedAndUnsolvedQuestions(String name,UserEntity user){

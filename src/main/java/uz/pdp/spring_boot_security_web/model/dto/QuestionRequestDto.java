@@ -12,5 +12,6 @@ public class QuestionRequestDto {
     private String text;
     private String example;
     private String topicName;
+    private String methodAndParams;
     private String subjectName;
 }
