@@ -14,7 +14,10 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -27,26 +30,9 @@ import java.util.Properties;
 @EnableMethodSecurity
 @EnableWebSecurity
 @RequiredArgsConstructor
-//@PropertySource("classpath:application.properties")
 public class SecurityConfig {
 
     private final AuthService authService;
-    //    Admin kirib test qilishi uchun yollar
-    private static final String[] TEST_LIST = new String[]{
-            "/subject/{title}"
-            , "/adminSubject/deleteSubject/{id}"
-            , "/adminSubject/get/{id}"
-            ,"/adminSubject/subjects"
-            ,"/adminTopic/deleteTopic/{id}"
-            ,"/adminQuestion/deleteQuestion/{id}"
-    };
-    //    Admin kirib test qilishi uchun yollar
-
-    private static final String[] TEST_LIST_POST = new String[]{
-            "/adminSubject/addSubject"
-            ,"/adminTopic/addTopic"
-            ,"/adminQuestion/addQuestion"
-    };
     //User krishi mumkin bolgan yollar
     private static final String[] USER_CAN_ENTER = new String[]{
             "/**"
@@ -77,10 +63,12 @@ public class SecurityConfig {
                 .authenticated()
                 .and()
                 .formLogin()
-                .defaultSuccessUrl("/")
+                .loginPage("/login")
+                .defaultSuccessUrl("/",true)
                 .and()
                 .logout()
                 .logoutUrl("/logout")
+                .logoutSuccessUrl("/")
                 .deleteCookies("JSESSIONID");
 
         return http.build();
@@ -108,8 +96,8 @@ public class SecurityConfig {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost("smtp.gmail.com");
         mailSender.setPort(587);
-        mailSender.setUsername("codinglife2022@gmail.com");
-        mailSender.setPassword("nuoxzxwuurzchznr");
+        mailSender.setUsername("123@gmail.com");
+        mailSender.setPassword("dasgfsgsafdfsfaf");
 
         Properties properties = mailSender.getJavaMailProperties();
         properties.put("mail.transport.protocol", "smtp");

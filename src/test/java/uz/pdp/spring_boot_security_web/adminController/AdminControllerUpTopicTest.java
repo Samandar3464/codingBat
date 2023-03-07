@@ -5,6 +5,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.testcontainers.lifecycle.Startables;
@@ -13,6 +14,7 @@ import uz.pdp.spring_boot_security_web.controller.BaseTest;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 class AdminControllerUpTopicTest extends BaseTest {
 
@@ -27,55 +29,49 @@ class AdminControllerUpTopicTest extends BaseTest {
 //        subjectRepository.deleteAll();
     }
 
-//    @AfterAll
-//    static void afterAll() {
-//        subjectRepository.deleteAll();
-//    }
-
-//    @AfterClass
-//    public void aa(){
-//    topicRepository.truncateMyTable();
-//    }
-
-
     @Test
+    @WithMockUser(roles = "SUPER_ADMIN")
     void canAddTopic() throws Exception {
         callAddSubject();
-        callAdd().andExpect(status().isOk());
+        callAdd().andExpect(view().name("redirect:/adminTopic/topics"));
     }
 
     @Test
-    void canThrowException() throws Exception {
+    @WithMockUser(roles = "SUPER_ADMIN")
+    void canThrowExceptionWhenAdd() throws Exception {
         callAddSubject();
         callAdd();
-        callAdd().andExpect(status().isAlreadyReported());
+        callAdd().andExpect(view().name("404"));
     }
 
     @Test
+    @WithMockUser(roles = "SUPER_ADMIN")
     void canDelete() throws Exception {
         callAddSubject();
         callAdd();
-        deleteById(3).andExpect(status().isOk());
+        deleteById(2).andExpect(view().name("redirect:/adminTopic/topics"));
+    }
+    @Test
+    @WithMockUser(roles = "SUPER_ADMIN")
+    void deleteCanThrow() throws Exception {
+        callAddSubject();
+        callAdd();
+        deleteById(9).andExpect(view().name("404"));
     }
 
-    @Test
-    void deleteTopicCanThrowException() throws Exception {
-        deleteById(10).andExpect(status().isNotFound());
-    }
 
     public ResultActions callAdd() throws Exception {
-//        SubjectEntity java = subjectRepository.save(new SubjectEntity("Java"));
-        int id = 0;
         final MockHttpServletRequestBuilder requestBuilder
                 = post("/adminTopic/addTopic")
                 .param("name", "Array")
-                .param("subjectId", String.valueOf(++id));
+                .param("subject", "Kotlin");
         return mockMvc.perform(requestBuilder);
     }
 
     private ResultActions callAddSubject() throws Exception {
         final MockHttpServletRequestBuilder request =
-                post("/adminSubject/addSubject").param("title", "Kotlin");
+                post("/adminSubject/addSubject")
+                        .param("title", "Kotlin");
         return mockMvc.perform(request);
     }
 

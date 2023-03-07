@@ -1,11 +1,18 @@
 package uz.pdp.spring_boot_security_web.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import uz.pdp.spring_boot_security_web.config.SecurityConfig;
 import uz.pdp.spring_boot_security_web.entity.UserEntity;
 import uz.pdp.spring_boot_security_web.model.dto.receive.UserRegisterDTO;
 import uz.pdp.spring_boot_security_web.service.UserService;
+
+import java.io.IOException;
 
 @Controller
 @RequestMapping("/api/user")
@@ -30,5 +37,16 @@ public class UserController {
             return "redirect:/";
         }
         return "redirect:/register";
+    }
+    @GetMapping("/editPhoto")
+    public String savePage(){
+        return "cabinet";
+    }
+    @PostMapping("/save")
+    public String savePhoto(@RequestParam("file")MultipartFile file) throws IOException {
+        UserEntity userEntity= (UserEntity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        userService.editUserEntity(userEntity.getId(),file );
+
+        return "redirect:/";
     }
 }

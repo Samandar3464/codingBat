@@ -1,47 +1,76 @@
 <!doctype html>
-<head>
+<head xmlns:th="http://www.thymeleaf.org">
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="codingbat.css">
-
     <title>CodingBat Java</title></head>
 <body>
-<span style='font-size:200%;'>CodingBat</span>code practice
-<div style='float:right;  margin:0px; border: 1px solid lightgray;'>
-    <form method="get" action="/register">
-        <button type="submit">Create account</button>
-    </form>
-    <form method="post" action="/login">
-        <button type="submit">Login account</button>
-    </form>
+<a href="/"><span style='font-size:200%;'>CodingBat</span></a> code practice
+<!--Userni profelini tekshirish uchun -->
+<span th:if="${users==null}">
+
+    <div style='float:right;  margin:0px; border: 1px solid lightgray;'>
+    <table>
+        <tr>
+            <td colspan="2">  <a href="/login">Log in</a></td>
+        </tr>
+        <tr>
+            <td colspan="2">  <a href="/register">Create account</a></td>
+        </tr>
+    </table>
 </div>
-<div class="pretab"><p class="max">Welcome to Codingbat. </p></div>
+</span>
+<span th:if="${users!=null}">
+    <a th:each="user: ${users}">
+    <div style='float:right;  margin:0px; border: 1px solid lightgray;'>
+         <img :src="../static/images/avatar.jpeg" width="80" height="60"
+              th:src="@{images/avatar.jpeg}"/>
+    </div>
+    </a>
+    <div style='float:right;  margin:0px; border: 1px solid lightgray;'>
+
+          <a th:each="user: ${users}">
+              <td><a th:text="${user.getEmail()}"></a></td>
+              <br>
+              <br>
+            <a href="/logout">Log out</a>
+            <a href="/api/user/editPhoto">|  Edit profile</a>
+    </a>
+</div>
+</span>
+
+<!--oxiri-->
+
+<div class="pretab"><p class="max">Welcome to Codingbat.
+</p>
+
+</div>
+
 <div class="tabc">
     <nav>
-        <tr th:each="subject: ${subjects}">
-            <a th:text="${subject.getTitle()}" th:href="@{/{title}(title=${subject.getTitle()})}"></a>
-        </tr>
-
-
+        <ul>
+            <li class="h2" th:each="subject: ${subjects}">
+                <a th:text="${subject.getTitle()}" th:href="@{/{title}(title=${subject.getTitle()})}"></a>
+            </li>
+        </ul>
     </nav>
     <div class="tabin">
         <div class="floatleft">
             <table>
-                <tr th:each="topic: ${topics}">
+                <tr th:each="topic: ${topics}" >
                     <td>
                         <div class="summ">
                             <a th:href="'/question/'+${topic.getName()}">
-                                <span class="h2">
-                                    <br th:text="${topic.getName()}"><br>
+                                <span class="h3">
+                                    <h3 th:text="${topic.getName()}" ></h3>
                                 </span>
                             </a>
                         </div>
                     </td>
-
+                </tr>
                 </tr>
 
             </table>
         </div>
-
     </div>
 </div>
 <style>

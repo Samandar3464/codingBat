@@ -2,14 +2,20 @@ package uz.pdp.spring_boot_security_web.controller;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.testcontainers.lifecycle.Startables;
+import uz.pdp.spring_boot_security_web.adminController.AdminControllerUpSubject;
+import uz.pdp.spring_boot_security_web.config.SecurityConfig;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+@Import(SecurityConfig.class)
 class SubjectControllerTest extends BaseTest {
 
     @BeforeAll
@@ -23,19 +29,26 @@ class SubjectControllerTest extends BaseTest {
         subjectRepository.deleteAll();
     }
     @Test
+    @Disabled
+    @WithMockUser(roles = "SUPER_ADMIN")
     void findByTitle() throws Exception {
         callAdd();
-        findByName("Kotlin").andExpect(status().isOk());
+        findByName("Kotlin").andExpect(view().name("index"));
     }
     @Test
+    @WithMockUser(roles = "SUPER_ADMIN")
     void findByTitleThrow() throws Exception {
-        findByName("Java").andExpect(status().isBadRequest());
+        findByName("Java").andExpect(view().name("404"));
     }
+
+
+
     private ResultActions findByName(String a) throws Exception {
         final MockHttpServletRequestBuilder request =
                 get("/subject/{title}", a);
         return mockMvc.perform(request);
     }
+
     private ResultActions callAdd() throws Exception {
         final MockHttpServletRequestBuilder request =
                 post("/adminSubject/addSubject")

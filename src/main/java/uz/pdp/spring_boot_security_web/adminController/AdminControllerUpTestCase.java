@@ -7,47 +7,49 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import uz.pdp.spring_boot_security_web.entity.QuestionEntity;
+import uz.pdp.spring_boot_security_web.entity.TestCaseEntity;
 import uz.pdp.spring_boot_security_web.entity.UserEntity;
-import uz.pdp.spring_boot_security_web.model.dto.QuestionRequestDto;
-import uz.pdp.spring_boot_security_web.service.QuestionService;
+import uz.pdp.spring_boot_security_web.model.dto.TestCaseDto;
+import uz.pdp.spring_boot_security_web.service.TestCaseService;
 
 import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/adminQuestion")
-public class AdminControllerUpQuestions {
-    private final QuestionService questionService;
-
+@RequestMapping("/admin/testCase")
+public class AdminControllerUpTestCase {
+    private final TestCaseService testCaseService;
     @PreAuthorize("hasRole('ADMIN') and hasAuthority('ADD') or hasRole('SUPER_ADMIN')")
-    @PostMapping("/addQuestion")
-    public String addQuestion(@ModelAttribute QuestionRequestDto questionRequestDTO) {
-        questionService.add(questionRequestDTO);
+    @PostMapping("/add")
+    public String addTestCase(@ModelAttribute TestCaseDto testCaseDto) {
+        testCaseService.add(testCaseDto);
         return "redirect:/adminQuestion/questions";
     }
     @PreAuthorize("hasRole('ADMIN') and hasAuthority('READ') or hasRole('SUPER_ADMIN')")
-    @GetMapping("/questions")
-    public String getQuestionList(Model model) {
+    @GetMapping("/testCases")
+    public String getTestCaseList(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserEntity user = (UserEntity) authentication.getPrincipal();
         model.addAttribute("users", user);
-        List<QuestionEntity> questionEntities = questionService.getList();
+        List<TestCaseEntity> questionEntities = testCaseService.getList();
         model.addAttribute("questions", questionEntities);
         return "admin/questionPageForAdmin";
     }
 
     @PreAuthorize("hasRole('ADMIN') and hasAuthority('DELETE') or hasRole('SUPER_ADMIN')")
-    @GetMapping("/deleteQuestion/{id}")
+    @GetMapping("/delete/{id}")
     public String deleteQuestionById(@PathVariable int id) {
-        questionService.delete(id);
+        testCaseService.delete(id);
         return "redirect:/adminQuestion/questions";
     }
-
-    @PreAuthorize("hasRole('ADMIN') and hasAuthority('UPDATE') or hasRole('SUPER_ADMIN')")
-    @PostMapping("/update/{id}")
-    public String updateQuestionById(@PathVariable int id, @ModelAttribute QuestionRequestDto questionRequestDto){
-        questionService.update(id,questionRequestDto);
-        return "redirect:/adminQuestion/questions";
+    @PreAuthorize("hasRole('ADMIN') and hasAuthority('READ') or hasRole('SUPER_ADMIN')")
+    @GetMapping("/page")
+    public String getTopicsList(Model model) {
+        List<TestCaseEntity> list = testCaseService.getList();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserEntity user = (UserEntity) authentication.getPrincipal();
+        model.addAttribute("users", user);
+        model.addAttribute("tests", list);
+        return "admin/testCasePageForAdmin";
     }
 }

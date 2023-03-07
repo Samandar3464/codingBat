@@ -3,6 +3,7 @@ package uz.pdp.spring_boot_security_web.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedBy;
@@ -13,8 +14,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import java.sql.Timestamp;
 @Getter
+@Setter
 @MappedSuperclass
-
 public abstract class BaseEntity {
 
     @Id
