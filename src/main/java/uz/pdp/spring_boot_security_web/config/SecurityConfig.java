@@ -35,7 +35,7 @@ public class SecurityConfig {
     private final AuthService authService;
     //User krishi mumkin bolgan yollar
     private static final String[] USER_CAN_ENTER = new String[]{
-            "/*"
+            "/**"
             , "/login"
             , "/register"
             , "/api/user/verify/**"
